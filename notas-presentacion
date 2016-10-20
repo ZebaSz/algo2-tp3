@@ -1,0 +1,19 @@
+TP3
+-implementar el propio TP2 en grupo
+-entregas electronica y presencial obligatorias
+-hacer todos los modulos menos los basicos
+	-implementaciones de los basicos pueden ser encontradas en la pagina del dc
+-llenar el driver con nuestra propia implementacion
+	-driver es una interfaz que incluira modulos basicos
+	-es recomendable hacer esto una vez que nuestro codigo haya pasado tests locales
+-la entrega presencial se agenda extraoficialmente, despues de haber realizado la entrega virtual exitosamente
+	-coloquio grupal
+	-todos deben conocer todo el codigo
+	-el docente corrector es el mismo docente que el del TP2
+-hay que respetar interfaces de cada modulo
+	-los iteradores son subclases (como en el labo)
+	-la estructura debe ser privada
+-las complejidades de las implementaciones deberian ser fieles a las del TP2
+	-no se pueden codear implementaciones sustancialmente distintas a lo explicitado en el TP2 
+	excepto que se charle y el docente lo permita
+-siempre que se pueda, respetar el pasaje de parametros del TP2
