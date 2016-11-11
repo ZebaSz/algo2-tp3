@@ -1,0 +1,15 @@
+language:
+  - cpp
+
+script:
+  - echo "Compilando..."
+  - mkdir build
+  - cd build
+  - cmake ..
+  - make
+  - echo "Corriendo tests..."
+  - ./correrTests
+  - result=$?
+  - cd ..
+  - rm -r build
+  - echo "Tests finalizados"
