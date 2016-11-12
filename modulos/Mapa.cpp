@@ -72,6 +72,9 @@ bool operator==(const Mapa& m1, const Mapa& m2) {
 bool operator!=(const Mapa& m1, const Mapa& m2) {
     return not (m1 == m2);
 }
+std::ostream& operator<<(std::ostream& os, const Mapa& m) {
+    os << m.Coordenadas();
+}
 
 void Mapa::Unir(const Coordenada& c1, const Coordenada& c2) {
     if(PosExistente(c1) && PosExistente(c2) && !HayCamino(c1,c2)) {

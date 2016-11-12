@@ -27,6 +27,8 @@ protected:
     aed2::Conj<Pokemon> pks;
     DiccString<aed2::Nat> dicc1;
     DiccString<aed2::Nat> dicc2;
+
+    DiccString<aed2::Nat>::const_Iterador it;
 };
 
 // --------- TESTS DEL DICCIONARIO ---------
@@ -119,6 +121,54 @@ TEST_F(DiccStringTest, igualdad) {
 
 // --------- TESTS DEL ITERADOR ---------
 
-TEST_F(DiccStringTest, crear) {
+TEST_F(DiccStringTest, itVacio) {
+    it = dicc1.CrearIt();
+    ASSERT_FALSE(it.HaySiguiente());
+    ASSERT_FALSE(it.HayAnterior());
+}
 
+TEST_F(DiccStringTest, itAvanzarRetroceder) {
+    dicc1.Definir(pk1, 1);
+    dicc1.Definir(pk2, 2);
+
+    it = dicc1.CrearIt();
+    ASSERT_TRUE(it.HaySiguiente());
+    ASSERT_FALSE(it.HayAnterior());
+
+    it.Avanzar();
+    ASSERT_TRUE(it.HaySiguiente());
+    ASSERT_TRUE(it.HayAnterior());
+
+    it.Avanzar();
+    ASSERT_FALSE(it.HaySiguiente());
+    ASSERT_TRUE(it.HayAnterior());
+}
+
+TEST_F(DiccStringTest, itSiguienteAnterior) {
+    dicc1.Definir(pk1, 1);
+    dicc1.Definir(pk2, 2);
+
+    DiccString<aed2::Nat>::Entrada en1(pk1, 1);
+    DiccString<aed2::Nat>::Entrada en2(pk2, 2);
+
+    // El orden en que figuran para el iterador es inverso
+    // porque se usa AgregarRapido al definir,
+    // que agrega la clave al principio
+    it = dicc1.CrearIt();
+    ASSERT_EQ(it.Siguiente(), en2);
+
+    it.Avanzar();
+    ASSERT_EQ(it.Siguiente(), en1);
+    ASSERT_EQ(it.Anterior(), en2);
+
+    it.Avanzar();
+    ASSERT_EQ(it.Anterior(), en1);
+}
+
+TEST_F(DiccStringTest, itClaves) {
+    dicc1.Definir(pk1, 1);
+    dicc1.Definir(pk2, 2);
+    dicc1.Definir(pk3, 3);
+    dicc1.Definir(pk4, 4);
+// TODO terminar este test
 }

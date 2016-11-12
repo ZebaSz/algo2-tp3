@@ -24,16 +24,30 @@ public:
     const aed2::Conj<aed2::String>& Claves() const;
 
     struct Entrada {
-        Entrada(aed2::String& key, T& value) : clave(key), valor(value) {}
+        Entrada(const aed2::String& key, T value) : clave(key), valor(value) {}
 
-        aed2::String& clave;
-        T& valor;
+        friend bool operator==(const Entrada& en1, const Entrada& en2) {
+            return en1.clave == en2.clave && en1.valor == en2.valor;
+        }
+
+        friend bool operator!=(const Entrada& en1, const Entrada& en2) {
+            return not (en1 == en2);
+        }
+
+        friend std::ostream& operator<<(std::ostream& os, const Entrada& en) {
+            os << '<' << en.clave << ',' << en.valor << '>';
+        }
+
+        aed2::String clave;
+        T valor;
     };
 
     class const_Iterador {
     friend class DiccString;
 
     public:
+        const_Iterador() {}
+
         bool HaySiguiente() const;
 
         bool HayAnterior() const;
@@ -49,7 +63,7 @@ public:
     private:
         const_Iterador(const DiccString*);
 
-        typename aed2::Conj<T>::const_Iterador _itClaves;
+        typename aed2::Conj<aed2::String>::const_Iterador _itClaves;
         const DiccString* _dic;
     };
 

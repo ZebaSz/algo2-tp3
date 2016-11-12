@@ -30,6 +30,8 @@ public:
 
     friend bool operator!=(const Mapa&, const Mapa&);
 
+    friend std::ostream& operator<<(std::ostream& os, const Mapa&);
+
 #ifdef DEBUG
     friend const aed2::Vector< aed2::Vector< dataPos > >& Posiciones(const Mapa&);
 #endif
