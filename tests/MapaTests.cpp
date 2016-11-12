@@ -17,6 +17,13 @@ protected:
         cc.Agregar(Coordenada(1,4));
     }
 
+    void agregarConjCoords(Mapa& m, const aed2::Conj<Coordenada> cs) {
+        aed2::Conj<Coordenada>::const_Iterador it;
+        for(it = cc.CrearIt(); it.HaySiguiente(); it.Avanzar()) {
+            m.AgregarCoor(it.Siguiente());
+        }
+    }
+
     Mapa m;
     Coordenada c1;
     Coordenada c2;
@@ -26,19 +33,33 @@ protected:
 
 // --------- TESTS ---------
 
+TEST_F(MapaTest, vacio) {
+    ASSERT_EQ(m.Alto(), 0);
+    ASSERT_EQ(m.Ancho(), 0);
+    ASSERT_TRUE(m.Coordenadas().EsVacio());
+}
+
 TEST_F(MapaTest, coordenadasCorrectas) {
-    aed2::Conj<Coordenada>::const_Iterador it;
-    for(it = cc.CrearIt(); it.HaySiguiente(); it.Avanzar()) {
-        m.AgregarCoor(it.Siguiente());
-    }
+    agregarConjCoords(m, cc);
     ASSERT_EQ(m.Coordenadas(), cc);
 }
 
 TEST_F(MapaTest, conexionesCorrectas) {
-    aed2::Conj<Coordenada>::const_Iterador it;
-    for(it = cc.CrearIt(); it.HaySiguiente(); it.Avanzar()) {
-        m.AgregarCoor(it.Siguiente());
-    }
+    agregarConjCoords(m, cc);
     ASSERT_TRUE(m.HayCamino(c1, c2));
     ASSERT_FALSE(m.HayCamino(c1, c3));
 }
+
+// --------- TESTS CON OPCIONES DE DEBUG ---------
+
+#ifdef DEBUG
+TEST_F(MapaTest, altoAncho) {
+    agregarConjCoords(m, cc);
+    ASSERT_EQ(m.Alto(), Posiciones(m).Longitud());
+    ASSERT_EQ(m.Ancho(), Posiciones(m)[1].Longitud());
+}
+
+const aed2::Vector< aed2::Vector< Mapa::dataPos > >& Posiciones(const Mapa& m) {
+    return m._posiciones;
+}
+#endif

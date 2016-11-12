@@ -1,5 +1,6 @@
 #include "Mapa.h"
 
+
 Mapa::Mapa() : _alto(0), _ancho(0), _proxGrupo(0) {
 }
 

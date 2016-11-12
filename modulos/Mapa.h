@@ -4,8 +4,11 @@
 #include "../aed2/Conj.h"
 #include "../aed2/Vector.h"
 #include "../TiposJuego.h"
+#include "../debug.h"
 
 class Mapa {
+private:
+    struct dataPos;
 public:
     Mapa();
 
@@ -22,6 +25,10 @@ public:
     aed2::Nat Alto();
 
     aed2::Nat Ancho();
+
+#ifdef DEBUG
+    friend const aed2::Vector< aed2::Vector< dataPos > >& Posiciones(const Mapa&);
+#endif
 
 private:
     struct dataPos {

@@ -17,7 +17,7 @@ set(SOURCE_FILES
     modulos/Juego.cpp
     modulos/Juego.h
     modulos/Mapa.cpp
-    modulos/Mapa.h)
+    modulos/Mapa.h debug.h)
 
 set(TEST_FILES
     tests/MapaTests.cpp
