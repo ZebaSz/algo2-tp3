@@ -1,8 +1,8 @@
 #include "Driver.h"
 
-// Instanciar un mapa y un juego 
+// Instanciar un Mapa y un juego
 
-Driver::Driver(const Conj< Coordenada > & cs)
+Driver::Driver(const Conj< Coordenada > & cs) : _juego(conjAMapa(cs))
 {
 }
 
@@ -28,7 +28,7 @@ void Driver::moverse(const Jugador &j, const Coordenada &c) {
 }
 
 Conj<Coordenada> Driver::mapa() const {
-    return Conj<Coordenada>();
+    return _juego.ObtenerMapa().Coordenadas();
 }
 
 bool Driver::hayCamino(const Coordenada &c1, const Coordenada &c2) const {
@@ -101,6 +101,15 @@ Nat Driver::cantPokemonsTotales() const {
 
 Nat Driver::cantMismaEspecie(const Pokemon &p) const {
     return 0;
+}
+
+Mapa Driver::conjAMapa(const Conj<Coordenada>& cs) {
+    Mapa mapa;
+    Conj<Coordenada>::const_Iterador it;
+    for(it = cs.CrearIt(); it.HaySiguiente(); it.Avanzar()) {
+        mapa.AgregarCoor(it.Siguiente());
+    }
+    return mapa;
 }
 
 

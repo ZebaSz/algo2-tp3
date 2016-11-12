@@ -5,14 +5,16 @@
 #include "aed2/Dicc.h"
 #include "aed2/TiposBasicos.h"
 #include "TiposJuego.h"
+#include "modulos/Juego.h"
+#include "modulos/Mapa.h"
 
 using namespace aed2;
 
 class Driver {
 
-	public:
+public:
 
-	/* Inicializa un juego con un mapa fijo. */
+	/* Inicializa un juego con un Mapa fijo. */
 	Driver(const Conj< Coordenada > & cs);
 	
 	/* Destruye el contenido del juego, liberando la memoria dinámica alocada. */
@@ -28,7 +30,7 @@ class Driver {
 
 	/* Al jugador pasado por parametro, lo conecta en la coordenada indicada.
 	 * Requiere que el jugador este en el juego desconectado y 
-	 * que la Coordenada pasada este en el mapa. */
+	 * que la Coordenada pasada este en el Mapa. */
 	void conectarse(const Jugador & j, const Coordenada & c);
 
 	/* Al jugador pasado por parametro, lo desconecta.
@@ -37,17 +39,17 @@ class Driver {
 
 	/* Al jugador pasado por parametro, lo intenta mover hacia la coordenada indicada.
 	 * Requiere que el jugador este en el juego conectado y 
-	 * que la Coordenada pasada este en el mapa. */
+	 * que la Coordenada pasada este en el Mapa. */
 	void moverse(const Jugador & j, const Coordenada & c);
 
-	/* Devuelve todas las coordenadas que posee el mapa del Juego. */
+	/* Devuelve todas las coordenadas que posee el Mapa del Juego. */
 	Conj< Coordenada > mapa() const;
 
 	/* Indica si hay un camino posible entre dos coordenadas 
-	*  Requiere que las coordenadas existan en el mapa */
+	*  Requiere que las coordenadas existan en el Mapa */
 	bool hayCamino(const Coordenada & c1, const Coordenada & c2) const;
 	
-	/* Indica si una coordenada existe o no en el mapa */
+	/* Indica si una coordenada existe o no en el Mapa */
 	bool posExistente(const Coordenada & c) const;
 
 	/* Devuelve los jugadores que fueron insertados en el juego y no fueron eliminados. */
@@ -73,18 +75,18 @@ class Driver {
 	/* Devuelve los jugadores que fueron expulsados del juego. */
 	Conj< Jugador > expulsados() const;
 
-	/* Devuelve todas las coordenadaes del mapa que tienen un pokemon en ella. */
+	/* Devuelve todas las coordenadaes del Mapa que tienen un pokemon en ella. */
 	Conj< Coordenada > posConPokemons() const;
 
-	/* Dada una coordenada del mapa, devuelve al pokemon situado en ella.
-	 * Es requisito que la coordenada exista en el mapa y que exista un pokemon alli. */
+	/* Dada una coordenada del Mapa, devuelve al pokemon situado en ella.
+	 * Es requisito que la coordenada exista en el Mapa y que exista un pokemon alli. */
 	Pokemon pokemonEnPos(const Coordenada & c) const;
 
  	/* Dada una coordenada, devuelve el valor del contador de movimientos fuera del rango.
 	* Es requisito que en la coordenada pasada como parametro haya un pokemon. */
 	Nat cantMovimientosParaCaptura(const Coordenada & c) const;
 
-	/* Dada una coordenada cualquiera, indica si la coordenada existe en el mapa y
+	/* Dada una coordenada cualquiera, indica si la coordenada existe en el Mapa y
 	 * que hay un pokemon a distancia menor o igual a 5. */
 
 	bool puedoAgregarPokemon(const Coordenada & c) const;
@@ -113,7 +115,11 @@ class Driver {
 	Nat cantMismaEspecie(const Pokemon & p) const;
 
 
-	private:
+private:
+
+	Juego _juego;
+
+    Mapa conjAMapa(const Conj<Coordenada>&);
 
 	/************************************************************************
 	 * TODO: Va a ser necesario instanciar privadamente el Modulo principal *

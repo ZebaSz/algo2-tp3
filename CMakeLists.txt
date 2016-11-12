@@ -13,7 +13,11 @@ set(SOURCE_FILES
     aed2.h
     Driver.cpp
     Driver.h
-    TiposJuego.h Juego.cpp Juego.h)
+    TiposJuego.h
+    modulos/Juego.cpp
+    modulos/Juego.h
+    modulos/Mapa.cpp
+    modulos/Mapa.h)
 
 add_subdirectory(lib/googletest)
 enable_testing()
