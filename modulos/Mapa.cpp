@@ -66,6 +66,10 @@ aed2::Nat Mapa::Ancho() {
     return _ancho;
 }
 
+bool operator==(const Mapa& m1, const Mapa& m2) {
+    return m1.Coordenadas() == m2.Coordenadas();
+}
+
 void Mapa::Unir(const Coordenada& c1, const Coordenada& c2) {
     if(PosExistente(c1) && PosExistente(c2) && !HayCamino(c1,c2)) {
         aed2::Nat grupoViejo = _posiciones[c1.latitud][c1.longitud].grupo;

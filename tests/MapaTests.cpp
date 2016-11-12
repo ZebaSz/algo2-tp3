@@ -24,7 +24,8 @@ protected:
         }
     }
 
-    Mapa m;
+    Mapa m1;
+    Mapa m2;
     Coordenada c1;
     Coordenada c2;
     Coordenada c3;
@@ -34,32 +35,39 @@ protected:
 // --------- TESTS ---------
 
 TEST_F(MapaTest, vacio) {
-    ASSERT_EQ(m.Alto(), 0);
-    ASSERT_EQ(m.Ancho(), 0);
-    ASSERT_TRUE(m.Coordenadas().EsVacio());
+    ASSERT_EQ(m1.Alto(), 0);
+    ASSERT_EQ(m1.Ancho(), 0);
+    ASSERT_TRUE(m1.Coordenadas().EsVacio());
 }
 
 TEST_F(MapaTest, coordenadasCorrectas) {
-    agregarConjCoords(m, cc);
-    ASSERT_EQ(m.Coordenadas(), cc);
+    agregarConjCoords(m1, cc);
+    ASSERT_EQ(m1.Coordenadas(), cc);
 }
 
 TEST_F(MapaTest, conexionesCorrectas) {
-    agregarConjCoords(m, cc);
-    ASSERT_TRUE(m.HayCamino(c1, c2));
-    ASSERT_FALSE(m.HayCamino(c1, c3));
+    agregarConjCoords(m1, cc);
+    ASSERT_TRUE(m1.HayCamino(c1, c2));
+    ASSERT_FALSE(m1.HayCamino(c1, c3));
+}
+
+TEST_F(MapaTest, igualdad) {
+    agregarConjCoords(m1, cc);
+    agregarConjCoords(m2, cc);
+    ASSERT_EQ(m1, m2);
 }
 
 // --------- TESTS CON OPCIONES DE DEBUG ---------
 
 #ifdef DEBUG
 TEST_F(MapaTest, altoAncho) {
-    agregarConjCoords(m, cc);
-    ASSERT_EQ(m.Alto(), Posiciones(m).Longitud());
-    ASSERT_EQ(m.Ancho(), Posiciones(m)[1].Longitud());
+    agregarConjCoords(m1, cc);
+    ASSERT_EQ(m1.Alto(), Posiciones(m1).Longitud());
+    ASSERT_EQ(m1.Ancho(), Posiciones(m1)[1].Longitud());
 }
 
 const aed2::Vector< aed2::Vector< Mapa::dataPos > >& Posiciones(const Mapa& m) {
     return m._posiciones;
 }
+
 #endif
