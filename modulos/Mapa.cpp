@@ -1,6 +1,6 @@
 #include "Mapa.h"
 
-Mapa::Mapa() : _alto(0), _ancho(0) {
+Mapa::Mapa() : _alto(0), _ancho(0), _proxGrupo(0) {
 }
 
 Mapa::Mapa(const Mapa& otro) : _alto(otro._alto), _ancho(otro._ancho),

@@ -1,8 +1,13 @@
 language:
   - cpp
 
+addons:
+  apt:
+    packages:
+      - valgrind
+
 script:
   - mkdir build && cd build
   - cmake ..
   - make
-  - ./correrTests
+  - valgrind -q ./correrTests

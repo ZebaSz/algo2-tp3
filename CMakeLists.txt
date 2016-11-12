@@ -19,8 +19,12 @@ set(SOURCE_FILES
     modulos/Mapa.cpp
     modulos/Mapa.h)
 
+set(TEST_FILES
+    tests/MapaTests.cpp
+    tests/JuegoTests.cpp
+    tests/DriverTests.cpp)
+
 add_subdirectory(lib/googletest)
-enable_testing()
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
-add_executable(correrTests ${SOURCE_FILES} gtests.cpp)
+add_executable(correrTests ${SOURCE_FILES} ${TEST_FILES})
 target_link_libraries(correrTests gtest gtest_main)
