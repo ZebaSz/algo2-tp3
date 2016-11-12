@@ -541,7 +541,7 @@ bool Lista<T>::Iterador::operator == (const typename Lista<T>::Iterador& otro) c
 template<class T>
 Lista<T>::Iterador::Iterador(Lista<T>* lista, typename Lista<T>::Nodo* proximo)
   : lista_(lista), nodo_siguiente_(proximo)
-{};
+{}
 
 template <typename T>
 typename Lista<T>::Nodo* Lista<T>::Iterador::SiguienteReal() const

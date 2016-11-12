@@ -73,33 +73,33 @@ TEST_F(DiccStringTest, borrar) {
 
 TEST_F(DiccStringTest, definiciones) {
     dicc1.Definir(pk1, 1);
-    ASSERT_EQ(dicc1.Obtener(pk1), 1);
+    ASSERT_EQ(dicc1.Obtener(pk1), aed2::Nat(1));
     dicc1.Definir(pk2, 1);
-    ASSERT_EQ(dicc1.Obtener(pk1), 1);
-    ASSERT_EQ(dicc1.Obtener(pk2), 1);
+    ASSERT_EQ(dicc1.Obtener(pk1), aed2::Nat(1));
+    ASSERT_EQ(dicc1.Obtener(pk2), aed2::Nat(1));
     dicc1.Definir(pk1, 2);
-    ASSERT_EQ(dicc1.Obtener(pk1), 2);
-    ASSERT_EQ(dicc1.Obtener(pk2), 1);
+    ASSERT_EQ(dicc1.Obtener(pk1), aed2::Nat(2));
+    ASSERT_EQ(dicc1.Obtener(pk2), aed2::Nat(1));
 }
 
 TEST_F(DiccStringTest, definicionesConBorrado) {
     dicc1.Definir(pk1, 1);
-    ASSERT_EQ(dicc1.Obtener(pk1), 1);
+    ASSERT_EQ(dicc1.Obtener(pk1), aed2::Nat(1));
     dicc1.Definir(pk2, 1);
-    ASSERT_EQ(dicc1.Obtener(pk1), 1);
-    ASSERT_EQ(dicc1.Obtener(pk2), 1);
+    ASSERT_EQ(dicc1.Obtener(pk1), aed2::Nat(1));
+    ASSERT_EQ(dicc1.Obtener(pk2), aed2::Nat(1));
     dicc1.Definir(pk1, 2);
-    ASSERT_EQ(dicc1.Obtener(pk1), 2);
-    ASSERT_EQ(dicc1.Obtener(pk2), 1);
+    ASSERT_EQ(dicc1.Obtener(pk1), aed2::Nat(2));
+    ASSERT_EQ(dicc1.Obtener(pk2), aed2::Nat(1));
     dicc1.Borrar(pk1);
-    ASSERT_EQ(dicc1.Obtener(pk2), 1);
+    ASSERT_EQ(dicc1.Obtener(pk2), aed2::Nat(1));
 }
 
 TEST_F(DiccStringTest, claveVacia) {
     ASSERT_FALSE(dicc1.Definido(pk5));
     dicc1.Definir(pk5, 1);
     ASSERT_TRUE(dicc1.Definido(pk5));
-    ASSERT_EQ(dicc1.Obtener(pk5), 1);
+    ASSERT_EQ(dicc1.Obtener(pk5), aed2::Nat(1));
     dicc1.Borrar(pk5);
     ASSERT_FALSE(dicc1.Definido(pk5));
 }
@@ -170,5 +170,13 @@ TEST_F(DiccStringTest, itClaves) {
     dicc1.Definir(pk2, 2);
     dicc1.Definir(pk3, 3);
     dicc1.Definir(pk4, 4);
-// TODO terminar este test
+
+    it = dicc1.CrearIt();
+
+    aed2::Conj<Pokemon> claves;
+    while(it.HaySiguiente()) {
+        claves.AgregarRapido(it.Siguiente().clave);
+        it.Avanzar();
+    }
+    ASSERT_EQ(pks, claves);
 }

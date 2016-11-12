@@ -18,13 +18,16 @@ set(SOURCE_FILES
     modulos/Juego.h
     modulos/Mapa.cpp
     modulos/Mapa.h
-        modulos/DiccString.h debug.h)
+    modulos/DiccString.h debug.h)
 
 set(TEST_FILES
     tests/MapaTests.cpp
     tests/DiccStringTests.cpp
     tests/JuegoTests.cpp
     tests/DriverTests.cpp)
+
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic")
 
 add_subdirectory(lib/googletest)
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})

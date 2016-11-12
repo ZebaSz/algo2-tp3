@@ -35,7 +35,7 @@ public:
         }
 
         friend std::ostream& operator<<(std::ostream& os, const Entrada& en) {
-            os << '<' << en.clave << ',' << en.valor << '>';
+            return os << '<' << en.clave << ',' << en.valor << '>';
         }
 
         aed2::String clave;

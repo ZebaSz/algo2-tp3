@@ -35,8 +35,8 @@ protected:
 // --------- TESTS ---------
 
 TEST_F(MapaTest, vacio) {
-    ASSERT_EQ(m1.Alto(), 0);
-    ASSERT_EQ(m1.Ancho(), 0);
+    ASSERT_EQ(m1.Alto(), aed2::Nat(0));
+    ASSERT_EQ(m1.Ancho(), aed2::Nat(0));
     ASSERT_TRUE(m1.Coordenadas().EsVacio());
 }
 

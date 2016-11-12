@@ -4,8 +4,8 @@
 Mapa::Mapa() : _alto(0), _ancho(0), _proxGrupo(0) {
 }
 
-Mapa::Mapa(const Mapa& otro) : _alto(otro._alto), _ancho(otro._ancho),
-                               _posiciones(otro._posiciones) {
+Mapa::Mapa(const Mapa& otro) : _posiciones(otro._posiciones), _alto(otro._alto),
+                               _ancho(otro._ancho), _proxGrupo(otro._proxGrupo) {
 }
 
 void Mapa::AgregarCoor(const Coordenada& coor) {
@@ -73,7 +73,7 @@ bool operator!=(const Mapa& m1, const Mapa& m2) {
     return not (m1 == m2);
 }
 std::ostream& operator<<(std::ostream& os, const Mapa& m) {
-    os << m.Coordenadas();
+    return os << m.Coordenadas();
 }
 
 void Mapa::Unir(const Coordenada& c1, const Coordenada& c2) {
