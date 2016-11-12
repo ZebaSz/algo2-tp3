@@ -10,4 +10,4 @@ script:
   - mkdir build && cd build
   - cmake ..
   - make
-  - valgrind -q ./correrTests
+  - valgrind --leak-check=full --error-exitcode=10 ./correrTests

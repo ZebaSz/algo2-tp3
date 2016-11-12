@@ -53,7 +53,13 @@ TEST_F(MapaTest, conexionesCorrectas) {
 
 TEST_F(MapaTest, igualdad) {
     agregarConjCoords(m1, cc);
-    agregarConjCoords(m2, cc);
+    m2.AgregarCoor(c1);
+    m2.AgregarCoor(Coordenada(0,1));
+    m2.AgregarCoor(Coordenada(0,2));
+    m2.AgregarCoor(c2);
+    m2.AgregarCoor(c3);
+    ASSERT_NE(m1, m2);
+    m2.AgregarCoor(Coordenada(1,4));
     ASSERT_EQ(m1, m2);
 }
 

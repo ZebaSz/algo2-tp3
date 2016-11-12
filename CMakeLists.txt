@@ -17,10 +17,12 @@ set(SOURCE_FILES
     modulos/Juego.cpp
     modulos/Juego.h
     modulos/Mapa.cpp
-    modulos/Mapa.h debug.h)
+    modulos/Mapa.h
+        modulos/DiccString.h debug.h)
 
 set(TEST_FILES
     tests/MapaTests.cpp
+    tests/DiccStringTests.cpp
     tests/JuegoTests.cpp
     tests/DriverTests.cpp)
 

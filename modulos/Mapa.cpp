@@ -69,6 +69,9 @@ aed2::Nat Mapa::Ancho() {
 bool operator==(const Mapa& m1, const Mapa& m2) {
     return m1.Coordenadas() == m2.Coordenadas();
 }
+bool operator!=(const Mapa& m1, const Mapa& m2) {
+    return not (m1 == m2);
+}
 
 void Mapa::Unir(const Coordenada& c1, const Coordenada& c2) {
     if(PosExistente(c1) && PosExistente(c2) && !HayCamino(c1,c2)) {
