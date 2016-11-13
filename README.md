@@ -6,15 +6,9 @@
 
 ## Cómo compilar el TP
 
-El proyecto incluye un archivo `CMakeLists.txt` importable en CLion. Si querés buildear a mano podés correr los siguientes comandos:
+El proyecto incluye un archivo `CMakeLists.txt` importable en CLion. Incluye un target `correrTests`, que ejecuta todos los tests del proyecto.
 
-```
-mkdir build && cd build
-cmake ..
-make
-```
-
-Esto genera el archivo ejecutable `correrTests`. Se puede correr directamente o a través de Valgrind. El mismo ejecuta todos los tests del proyecto.
+Si querés buildear a mano, también se provee el archivo `correrTests.sh`, que crea una carpeta `build`, compila todo ahí y corre los tests con Valgrind. Para limpiar, alcanza con borrar esa carpeta.
 
 ## Cómo agregar tests
 
