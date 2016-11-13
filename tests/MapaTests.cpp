@@ -63,7 +63,7 @@ TEST_F(MapaTest, igualdad) {
     ASSERT_EQ(m1, m2);
 }
 
-// --------- TESTS CON OPCIONES DE DEBUG ---------
+// --------- TESTS DE ESTRUCTURA INTERNA ---------
 
 TEST_F(MapaTest, altoAncho) {
     agregarConjCoords(m1, cc);
