@@ -3,7 +3,6 @@
 
 #include "../aed2/TiposBasicos.h"
 #include "../aed2/Lista.h"
-#include "../debug.h"
 #include <iostream>
 
 template<typename T>
@@ -35,9 +34,8 @@ public:
 
         friend class ConjuntoOrd;
 
-#ifdef DEBUG
+        // TESTS DE ESTR INTERNA
         friend class ConjuntoOrdTest_factBal_Test;
-#endif
 
     private:
         const_Iterador(const ConjuntoOrd*);
@@ -54,11 +52,8 @@ public:
     template<typename S>
     friend bool operator!=(const ConjuntoOrd<S>&, const ConjuntoOrd<S>&);
 
-
-#ifdef DEBUG
+    // TESTS DE ESTR INTERNA
     friend class ConjuntoOrdTest_factBal_Test;
-#endif
-
 
 private:
     struct Nodo {

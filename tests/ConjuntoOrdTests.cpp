@@ -101,8 +101,6 @@ TEST_F(ConjuntoOrdTest, itElems) {
 
 // --------- TESTS CON OPCIONES DE DEBUG ---------
 
-#ifdef DEBUG
-
 TEST_F(ConjuntoOrdTest, factBal) {
     conj1.Agregar(j1);
     conj1.Agregar(j2);
@@ -117,5 +115,3 @@ TEST_F(ConjuntoOrdTest, factBal) {
         ASSERT_LE(factorBal, aed2::Nat(1));
     }
 }
-
-#endif

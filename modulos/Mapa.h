@@ -4,7 +4,6 @@
 #include "../aed2/Conj.h"
 #include "../aed2/Vector.h"
 #include "../TiposJuego.h"
-#include "../debug.h"
 
 class Mapa {
 private:
@@ -32,9 +31,8 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os, const Mapa&);
 
-#ifdef DEBUG
+    // TESTS DE ESTR INTERNA
     friend class MapaTest_altoAncho_Test;
-#endif
 
 private:
     struct dataPos {

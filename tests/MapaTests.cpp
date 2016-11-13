@@ -65,12 +65,8 @@ TEST_F(MapaTest, igualdad) {
 
 // --------- TESTS CON OPCIONES DE DEBUG ---------
 
-#ifdef DEBUG
-
 TEST_F(MapaTest, altoAncho) {
     agregarConjCoords(m1, cc);
     ASSERT_EQ(m1.Alto(), m1._posiciones.Longitud());
     ASSERT_EQ(m1.Ancho(), m1._posiciones[1].Longitud());
 }
-
-#endif
