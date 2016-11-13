@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 #include "../TiposJuego.h"
 #include "../modulos/ConjuntoOrd.h"
+#include "../aed2/Conj.h"
 
 // --------- FIXTURES ---------
 
@@ -12,6 +13,12 @@ protected:
         j3 = 3;
         j4 = 4;
         j5 = 5;
+
+        js.AgregarRapido(j1);
+        js.AgregarRapido(j2);
+        js.AgregarRapido(j3);
+        js.AgregarRapido(j4);
+        js.AgregarRapido(j5);
     }
 
     Jugador j1;
@@ -19,6 +26,8 @@ protected:
     Jugador j3;
     Jugador j4;
     Jugador j5;
+    aed2::Conj<Jugador> js;
+
     ConjuntoOrd<Jugador> conj1;
     ConjuntoOrd<Jugador> conj2;
 
@@ -40,6 +49,19 @@ TEST_F(ConjuntoOrdTest, minimo) {
     ASSERT_EQ(j1, conj1.Minimo());
 }
 
+TEST_F(ConjuntoOrdTest, elementos) {
+    conj1.Agregar(j1);
+    conj1.Agregar(j2);
+    conj1.Agregar(j3);
+    conj1.Agregar(j4);
+    conj1.Agregar(j5);
+
+    aed2::Conj<Jugador>::const_Iterador itJs;
+    for(itJs = js.CrearIt(); itJs.HaySiguiente(); itJs.Avanzar()) {
+        ASSERT_TRUE(conj1.Pertenece(itJs.Siguiente()));
+    }
+}
+
 TEST_F(ConjuntoOrdTest, igualdad) {
     conj1.Agregar(j1);
     conj1.Agregar(j2);
@@ -55,4 +77,24 @@ TEST_F(ConjuntoOrdTest, igualdad) {
     ASSERT_EQ(conj1, conj2);
 }
 
-// --------- TESTS DEL ITERADOR ---------t
+// --------- TESTS DEL ITERADOR ---------
+
+
+TEST_F(ConjuntoOrdTest, itVacio) {
+    it = conj1.CrearIt();
+    ASSERT_FALSE(it.HayMas());
+}
+
+TEST_F(ConjuntoOrdTest, itElems) {
+    conj1.Agregar(j1);
+    conj1.Agregar(j2);
+    conj1.Agregar(j3);
+    conj1.Agregar(j4);
+    conj1.Agregar(j5);
+
+    aed2::Conj<Jugador> conjAux;
+    for(it = conj1.CrearIt(); it.HayMas(); it.Avanzar()) {
+        conjAux.AgregarRapido(it.Actual());
+    }
+    ASSERT_EQ(js, conjAux);
+}
