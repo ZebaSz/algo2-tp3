@@ -19,7 +19,7 @@ set(SOURCE_FILES
     modulos/Mapa.cpp
     modulos/Mapa.h
     modulos/DiccString.h
-    modulos/ConjuntoOrd.h debug.h)
+    modulos/ConjuntoOrd.h)
 
 set(TEST_FILES
     tests/MapaTests.cpp
