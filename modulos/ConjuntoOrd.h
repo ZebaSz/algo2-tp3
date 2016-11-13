@@ -74,6 +74,12 @@ private:
 
     Nodo* InsertarNodo(const T& elem, Nodo* p);
 
+    Nodo* BorrarNodo(const T& elem, Nodo* p);
+
+    Nodo* BuscarMinimo(Nodo* p);
+
+    Nodo* RemoverMinimo(Nodo* p);
+
     Nodo* Balancear(Nodo* p);
 
     aed2::Nat Altura(const Nodo* p) const;
@@ -96,8 +102,6 @@ template <typename T>
 ConjuntoOrd<T>::~ConjuntoOrd(){
     delete _raiz;
 }
-
-// TODO: estas operaciones corresponden a ABBs, no AVLs; refactorizar con rotaciones, etc.
 
 template <typename T>
 void ConjuntoOrd<T>::Agregar(const T& elem) {
@@ -126,9 +130,9 @@ bool ConjuntoOrd<T>::Vacio() const{
 
 template <typename T>
 void ConjuntoOrd<T>::Borrar(const T& elem) {
-    if (_raiz != NULL) {
-        // borrarElem(_raiz, elem); //TODO
-    }
+    if (_raiz != NULL){
+        _raiz = BorrarNodo(elem, _raiz);
+        }
 }
 
 template <typename T>
@@ -218,6 +222,49 @@ void ConjuntoOrd<T>::ArreglarAlto(Nodo* p){
         p->altura = alturaDer + 1;
     } else{
         p->altura = alturaIzq + 1;
+    }
+}
+
+template <typename T>
+typename ConjuntoOrd<T>::Nodo* ConjuntoOrd<T>::BorrarNodo(const T &elem, Nodo *p){
+    if (p == NULL){
+        return p;
+    } else if (elem < p->valor){
+        p->izq = BorrarNodo(elem, p->izq);
+        return Balancear(p);
+    } else if (elem > p->valor){
+        p->der = BorrarNodo(elem, p->der);
+        return Balancear(p);
+    } else{
+        Nodo *i = p->izq;
+        Nodo *d = p->der;
+        if (d == NULL){
+            return i;
+        } else {
+            Nodo *minimo = BuscarMinimo(d);
+            minimo->der = RemoverMinimo(d);
+            minimo->izq = i;
+            return Balancear(minimo);
+        }
+    }
+}
+
+template <typename T>
+typename ConjuntoOrd<T>::Nodo* ConjuntoOrd<T>::BuscarMinimo(Nodo *p){
+    if (p->izq == NULL){
+        return p;
+    } else {
+        return BuscarMinimo(p->izq);
+    }
+}
+
+template <typename T>
+typename ConjuntoOrd<T>::Nodo* ConjuntoOrd<T>::RemoverMinimo(Nodo *p){
+    if (p->izq == NULL){
+        return p->der;
+    } else {
+        p->izq = RemoverMinimo(p->izq);
+        return Balancear(p);
     }
 }
 
