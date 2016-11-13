@@ -173,10 +173,16 @@ TEST_F(DiccStringTest, itClaves) {
 
     it = dicc1.CrearIt();
 
-    aed2::Conj<Pokemon> claves;
+    aed2::Conj<Pokemon> clavesSig;
     while(it.HaySiguiente()) {
-        claves.AgregarRapido(it.Siguiente().clave);
+        clavesSig.AgregarRapido(it.Siguiente().clave);
         it.Avanzar();
     }
-    ASSERT_EQ(pks, claves);
+    ASSERT_EQ(pks, clavesSig);
+    aed2::Conj<Pokemon> clavesAnt;
+    while(it.HayAnterior()) {
+        clavesAnt.AgregarRapido(it.Anterior().clave);
+        it.Retroceder();
+    }
+    ASSERT_EQ(pks, clavesAnt);
 }
