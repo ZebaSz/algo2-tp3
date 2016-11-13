@@ -239,11 +239,13 @@ typename ConjuntoOrd<T>::Nodo* ConjuntoOrd<T>::BorrarNodo(const T &elem, Nodo *p
         Nodo *i = p->izq;
         Nodo *d = p->der;
         if (d == NULL){
+            delete p;
             return i;
         } else {
             Nodo *minimo = BuscarMinimo(d);
             minimo->der = RemoverMinimo(d);
             minimo->izq = i;
+            delete p;
             return Balancear(minimo);
         }
     }
