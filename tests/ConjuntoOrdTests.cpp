@@ -49,6 +49,20 @@ TEST_F(ConjuntoOrdTest, minimo) {
     ASSERT_EQ(j1, conj1.Minimo());
 }
 
+TEST_F(ConjuntoOrdTest, borrar) {
+    conj1.Agregar(j4);
+    conj1.Agregar(j1);
+    conj1.Agregar(j2);
+    conj1.Borrar(j4);
+    ASSERT_EQ(j1, conj1.Minimo());
+    ASSERT_TRUE(!(conj1.Pertenece(j4)));
+    ASSERT_TRUE(conj1.Pertenece(j1));
+    conj1.Borrar(j1);
+    ASSERT_EQ(j2, conj1.Minimo());
+    conj1.Borrar(j2);
+    ASSERT_TRUE(conj1.Vacio());
+}
+
 TEST_F(ConjuntoOrdTest, elementos) {
     conj1.Agregar(j1);
     conj1.Agregar(j2);
