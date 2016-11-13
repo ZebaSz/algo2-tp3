@@ -52,7 +52,7 @@ public:
 
 private:
     struct Nodo {
-        Nodo(const T& v) : valor(v), izq(NULL), der(NULL) {};
+        Nodo(const T& v) : valor(v), altura(1), izq(NULL), der(NULL) {};
 
         ~Nodo() {
             if(this->izq != NULL) delete this->izq;
@@ -60,11 +60,24 @@ private:
         }
 
         T valor;
+        aed2::Nat altura;
         Nodo* izq;
         Nodo* der;
     };
 
-    aed2::Nat CantClaves() const;
+    aed2::Nat CantElems() const;
+
+    Nodo* InsertarNodo(const T& elem, Nodo* p);
+
+    Nodo* Balancear(Nodo* p);
+
+    aed2::Nat Altura(Nodo* p);
+
+    Nodo* rotarIzq(Nodo* p);
+
+    Nodo* rotarDer(Nodo* p);
+
+    void ArreglarAlto(Nodo* p);
 
     Nodo* _raiz;
 };
@@ -83,26 +96,8 @@ ConjuntoOrd<T>::~ConjuntoOrd(){
 
 template <typename T>
 void ConjuntoOrd<T>::Agregar(const T& elem) {
-    Nodo *pos = _raiz;
-    Nodo *sigPos = _raiz;
-    if (pos == NULL) {
-        _raiz = new Nodo(elem);
-    } else {
-        while (sigPos != NULL) {
-            if (pos->valor > elem) {
-                pos = sigPos;
-                sigPos = sigPos->izq;
-            } else if (pos->valor < elem) {
-                pos = sigPos;
-                sigPos = sigPos->der;
-            }
-        }
-        Nodo* nodoElem = new Nodo(elem);
-        if (pos->valor > elem) {
-            pos->izq = nodoElem;
-        } else if (pos->valor < elem) {
-            pos->der = nodoElem;
-        }
+    if(!Pertenece(elem)){
+        _raiz = InsertarNodo(elem, _raiz);
     }
 }
 
@@ -141,12 +136,84 @@ const T& ConjuntoOrd<T>::Minimo() const {
 }
 
 template <typename T>
-aed2::Nat ConjuntoOrd<T>::CantClaves() const {
+aed2::Nat ConjuntoOrd<T>::CantElems() const {
     aed2::Nat cant(0);
     for(const_Iterador it(this); it.HayMas(); it.Avanzar()) {
         ++cant;
     }
     return cant;
+}
+
+template <typename T>
+typename ConjuntoOrd<T>::Nodo* ConjuntoOrd<T>::Balancear(Nodo* p){
+    ArreglarAlto(p);
+    aed2::Nat alturaIzq = Altura(p->izq);
+    aed2::Nat alturaDer = Altura(p->der);
+    if (alturaDer > alturaIzq && (alturaDer - alturaIzq == 2)){
+        if (Altura(p->der->izq) > Altura(p->der->der)){
+            p->der = rotarDer(p->der);
+        }
+        return rotarIzq(p);
+    } else if (alturaIzq > alturaDer && (alturaIzq - alturaDer == 2)){
+        if (Altura(p->izq->der) > Altura(p->izq->izq)){
+            p->izq = rotarIzq(p->izq);
+        }
+        return rotarDer(p);
+    } else {
+        return p;
+    }
+}
+
+template <typename T>
+typename ConjuntoOrd<T>::Nodo* ConjuntoOrd<T>::InsertarNodo(const T& elem, Nodo* p){
+    if (p == NULL){
+        return (new Nodo(elem));
+    } else if (elem < p->valor){
+        p->izq = InsertarNodo(elem, p->izq);
+    } else {
+        p->der = InsertarNodo(elem, p->der);
+    }
+    return Balancear(p);
+}
+
+template <typename T>
+aed2::Nat ConjuntoOrd<T>::Altura(Nodo* p){
+    if (p == NULL){
+        return 0;
+    } else {
+        return p->altura;
+    }
+}
+
+template <typename T>
+typename ConjuntoOrd<T>::Nodo* ConjuntoOrd<T>::rotarIzq(Nodo* p){
+    Nodo *aux = p->der;
+    p->der = aux->izq;
+    aux->izq = p;
+    ArreglarAlto(p);
+    ArreglarAlto(aux);
+    return aux;
+}
+
+template <typename T>
+typename ConjuntoOrd<T>::Nodo* ConjuntoOrd<T>::rotarDer(Nodo* p){
+    Nodo *aux = p->izq;
+    p->izq = aux->der;
+    aux->der = p;
+    ArreglarAlto(p);
+    ArreglarAlto(aux);
+    return aux;
+}
+
+template <typename T>
+void ConjuntoOrd<T>::ArreglarAlto(Nodo* p){
+    aed2::Nat alturaIzq = Altura(p->izq);
+    aed2::Nat alturaDer = Altura(p->der);
+    if (alturaIzq < alturaDer) {
+        p->altura = alturaDer + 1;
+    } else{
+        p->altura = alturaIzq + 1;
+    }
 }
 
 template <typename T>
@@ -156,7 +223,7 @@ typename ConjuntoOrd<T>::const_Iterador ConjuntoOrd<T>::CrearIt() const {
 
 template <typename T>
 bool operator==(const ConjuntoOrd<T>& c1, const ConjuntoOrd<T>& c2) {
-    if(c1.CantClaves() != c2.CantClaves()) {
+    if(c1.CantElems() != c2.CantElems()) {
         return false;
     }
     typename ConjuntoOrd<T>::const_Iterador it = c1.CrearIt();
