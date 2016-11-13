@@ -33,7 +33,7 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Mapa&);
 
 #ifdef DEBUG
-    friend const aed2::Vector< aed2::Vector< dataPos > >& Posiciones(const Mapa&);
+    friend class MapaTest_altoAncho_Test;
 #endif
 
 private:

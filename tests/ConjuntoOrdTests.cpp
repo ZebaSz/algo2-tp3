@@ -98,3 +98,24 @@ TEST_F(ConjuntoOrdTest, itElems) {
     }
     ASSERT_EQ(js, conjAux);
 }
+
+// --------- TESTS CON OPCIONES DE DEBUG ---------
+
+#ifdef DEBUG
+
+TEST_F(ConjuntoOrdTest, factBal) {
+    conj1.Agregar(j1);
+    conj1.Agregar(j2);
+    conj1.Agregar(j3);
+    conj1.Agregar(j4);
+    conj1.Agregar(j5);
+
+    for(it = conj1.CrearIt(); it.HayMas(); it.Avanzar()) {
+        aed2::Nat alturaIzq = it._conj->Altura(it._pila.Primero()->izq);
+        aed2::Nat alturaDer = it._conj->Altura(it._pila.Primero()->der);
+        aed2::Nat factorBal = alturaDer > alturaIzq ? alturaDer - alturaIzq : alturaIzq - alturaDer;
+        ASSERT_LE(factorBal, aed2::Nat(1));
+    }
+}
+
+#endif

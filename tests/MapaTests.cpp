@@ -66,14 +66,11 @@ TEST_F(MapaTest, igualdad) {
 // --------- TESTS CON OPCIONES DE DEBUG ---------
 
 #ifdef DEBUG
+
 TEST_F(MapaTest, altoAncho) {
     agregarConjCoords(m1, cc);
-    ASSERT_EQ(m1.Alto(), Posiciones(m1).Longitud());
-    ASSERT_EQ(m1.Ancho(), Posiciones(m1)[1].Longitud());
-}
-
-const aed2::Vector< aed2::Vector< Mapa::dataPos > >& Posiciones(const Mapa& m) {
-    return m._posiciones;
+    ASSERT_EQ(m1.Alto(), m1._posiciones.Longitud());
+    ASSERT_EQ(m1.Ancho(), m1._posiciones[1].Longitud());
 }
 
 #endif

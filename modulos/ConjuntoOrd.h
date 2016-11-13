@@ -3,11 +3,11 @@
 
 #include "../aed2/TiposBasicos.h"
 #include "../aed2/Lista.h"
+#include "../debug.h"
 #include <iostream>
 
 template<typename T>
 class ConjuntoOrd {
-friend class const_Iterador;
 public:
     ConjuntoOrd();
 
@@ -24,8 +24,6 @@ public:
     const T& Minimo() const;
 
     class const_Iterador {
-    friend class ConjuntoOrd;
-
     public:
         const_Iterador();
 
@@ -34,6 +32,12 @@ public:
         const T& Actual() const;
 
         void Avanzar();
+
+        friend class ConjuntoOrd;
+
+#ifdef DEBUG
+        friend class ConjuntoOrdTest_factBal_Test;
+#endif
 
     private:
         const_Iterador(const ConjuntoOrd*);
@@ -49,6 +53,12 @@ public:
 
     template<typename S>
     friend bool operator!=(const ConjuntoOrd<S>&, const ConjuntoOrd<S>&);
+
+
+#ifdef DEBUG
+    friend class ConjuntoOrdTest_factBal_Test;
+#endif
+
 
 private:
     struct Nodo {
@@ -71,7 +81,7 @@ private:
 
     Nodo* Balancear(Nodo* p);
 
-    aed2::Nat Altura(Nodo* p);
+    aed2::Nat Altura(const Nodo* p) const;
 
     Nodo* rotarIzq(Nodo* p);
 
@@ -177,7 +187,7 @@ typename ConjuntoOrd<T>::Nodo* ConjuntoOrd<T>::InsertarNodo(const T& elem, Nodo*
 }
 
 template <typename T>
-aed2::Nat ConjuntoOrd<T>::Altura(Nodo* p){
+aed2::Nat ConjuntoOrd<T>::Altura(const Nodo* p) const{
     if (p == NULL){
         return 0;
     } else {

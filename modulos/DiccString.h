@@ -43,8 +43,6 @@ public:
     };
 
     class const_Iterador {
-    friend class DiccString;
-
     public:
         const_Iterador() {}
 
@@ -59,6 +57,8 @@ public:
         void Avanzar();
 
         void Retroceder();
+
+        friend class DiccString;
 
     private:
         const_Iterador(const DiccString*);
