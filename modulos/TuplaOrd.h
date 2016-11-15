@@ -21,7 +21,7 @@ struct TuplaOrd{
     }
 
     friend std::ostream& operator<< (std::ostream& os, const TuplaOrd<T,S>& t1) {
-        os << '(' << t1.primer << t1.segun << ')';
+        os << '<' << t1.primer << ',' << t1.segun << '>';
         return os;
     }
 

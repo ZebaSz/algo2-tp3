@@ -55,7 +55,7 @@ void ColaPrior<T>::Encolar(const T &elem){
 	_conjElem.Agregar(elem);
 	if(_menor == NULL) {
         _menor = new T(elem);
-    } else if (*_menor > elem){
+    } else if (elem < *_menor){
         delete _menor;
         _menor = new T(elem);
     }

@@ -6,9 +6,10 @@
 
 // --------- FIXTURES ---------
 
-typedef aed2::Nat nat;
 class ColaPriorTest : public ::testing::Test {
 protected:
+    ColaPriorTest() : tup1(1,2), tup2(2, 2), tup3(3, 1), tup4(4,4), tup5(5,0) {}
+
     virtual void SetUp() {
         j1 = 1;
         j2 = 2;
@@ -34,7 +35,13 @@ protected:
     ColaPrior<Jugador> cola1;
     ColaPrior<Jugador> cola2;
 
-    ColaPrior<TuplaOrd<Jugador, nat> > cola3;
+    TuplaOrd<Jugador, aed2::Nat> tup1;
+    TuplaOrd<Jugador, aed2::Nat> tup2;
+    TuplaOrd<Jugador, aed2::Nat> tup3;
+    TuplaOrd<Jugador, aed2::Nat> tup4;
+    TuplaOrd<Jugador, aed2::Nat> tup5;
+
+    ColaPrior<TuplaOrd<Jugador, aed2::Nat> > colaTup;
 
     ColaPrior<Jugador>::const_Iterador it;
 };
@@ -95,6 +102,23 @@ TEST_F(ColaPriorTest, igualdad) {
     ASSERT_NE(cola1, cola2);
     cola2.Encolar(j5);
     ASSERT_EQ(cola1, cola2);
+}
+
+TEST_F(ColaPriorTest, tuplas) {
+    colaTup.Encolar(tup1);
+    colaTup.Encolar(tup2);
+    colaTup.Encolar(tup3);
+    colaTup.Encolar(tup4);
+    colaTup.Encolar(tup5);
+    ASSERT_EQ(tup5, colaTup.Proximo());
+    colaTup.Desencolar();
+    ASSERT_EQ(tup3, colaTup.Proximo());
+    colaTup.Desencolar();
+    ASSERT_EQ(tup1, colaTup.Proximo());
+    colaTup.Desencolar();
+    ASSERT_EQ(tup2, colaTup.Proximo());
+    colaTup.Desencolar();
+    ASSERT_EQ(tup4, colaTup.Proximo());
 }
 
 // --------- TESTS DEL ITERADOR ---------

@@ -119,7 +119,7 @@ template <typename T>
 bool ConjuntoOrd<T>::Pertenece(const T& elem) const{
     Nodo* pos = _raiz;
     while (pos != NULL && pos->valor != elem){
-        if (pos->valor > elem) {
+        if (elem < pos->valor) {
             pos = pos->izq;
         } else if (pos->valor < elem){
             pos = pos->der;
@@ -237,7 +237,7 @@ typename ConjuntoOrd<T>::Nodo* ConjuntoOrd<T>::BorrarNodo(const T &elem, Nodo *p
     } else if (elem < p->valor){
         p->izq = BorrarNodo(elem, p->izq);
         return Balancear(p);
-    } else if (elem > p->valor){
+    } else if (p->valor < elem){
         p->der = BorrarNodo(elem, p->der);
         return Balancear(p);
     } else{
