@@ -52,6 +52,9 @@ public:
     template<typename S>
     friend bool operator!=(const ConjuntoOrd<S>&, const ConjuntoOrd<S>&);
 
+    template<typename S>
+    friend std::ostream& operator<<(std::ostream&, const ConjuntoOrd<S>&);
+
     // TESTS DE ESTR INTERNA
     friend class ConjuntoOrdTest_factBal_Test;
 
@@ -91,6 +94,8 @@ private:
     void ArreglarAlto(Nodo* p);
 
     Nodo* _raiz;
+
+    void Mostrar(std::ostream&, const Nodo*) const;
 };
 
 template <typename T>
@@ -132,7 +137,7 @@ template <typename T>
 void ConjuntoOrd<T>::Borrar(const T& elem) {
     if (_raiz != NULL){
         _raiz = BorrarNodo(elem, _raiz);
-        }
+    }
 }
 
 template <typename T>
@@ -239,12 +244,15 @@ typename ConjuntoOrd<T>::Nodo* ConjuntoOrd<T>::BorrarNodo(const T &elem, Nodo *p
         Nodo *i = p->izq;
         Nodo *d = p->der;
         if (d == NULL){
+            p->izq = NULL;
             delete p;
             return i;
         } else {
             Nodo *minimo = BuscarMinimo(d);
             minimo->der = RemoverMinimo(d);
             minimo->izq = i;
+            p->izq = NULL;
+            p->der = NULL;
             delete p;
             return Balancear(minimo);
         }
@@ -293,6 +301,26 @@ bool operator==(const ConjuntoOrd<T>& c1, const ConjuntoOrd<T>& c2) {
 template <typename T>
 bool operator!=(const ConjuntoOrd<T>& c1, const ConjuntoOrd<T>& c2) {
     return not (c1 == c2);
+}
+
+template<class T>
+std::ostream& operator<<(std::ostream& os, const ConjuntoOrd<T>& c) {
+    os << '{';
+    c.Mostrar(os, c._raiz);
+    return os << '}';
+}
+
+template<class T>
+void ConjuntoOrd<T>::Mostrar(std::ostream& os, const Nodo* nodo) const {
+    if(nodo->izq != NULL) {
+        Mostrar(os, nodo->izq);
+        os << ',';
+    }
+    os << nodo->valor;
+    if(nodo->der != NULL) {
+        os << ',';
+        Mostrar(os, nodo->der);
+    }
 }
 
 // ITERADOR

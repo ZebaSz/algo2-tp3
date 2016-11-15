@@ -75,6 +75,9 @@ public:
     template<typename S>
     friend bool operator!=(const DiccString<S>&, const DiccString<S>&);
 
+    template<typename S>
+    friend std::ostream& operator<<(std::ostream&, const DiccString<S>&);
+
 private:
 
     struct Nodo{
@@ -199,6 +202,11 @@ bool operator==(const DiccString<T>& d1, const DiccString<T>& d2) {
 template <typename T>
 bool operator!=(const DiccString<T>& d1, const DiccString<T>& d2) {
     return not (d1 == d2);
+}
+
+template<typename T>
+std::ostream& operator<<(std::ostream& os, const DiccString<T>& dicc) {
+    return aed2::Mostrar(os, dicc, '{', '}');
 }
 
 // ITERADOR
