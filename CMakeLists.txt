@@ -19,14 +19,16 @@ set(SOURCE_FILES
     modulos/Mapa.cpp
     modulos/Mapa.h
     modulos/DiccString.h
-    modulos/ConjuntoOrd.h)
+    modulos/ConjuntoOrd.h
+    modulos/ColaPrior.h)
 
 set(TEST_FILES
     tests/MapaTests.cpp
     tests/DiccStringTests.cpp
     tests/ConjuntoOrdTests.cpp
     tests/JuegoTests.cpp
-    tests/DriverTests.cpp)
+    tests/DriverTests.cpp
+    tests/ColaPriorTests.cpp)
 
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic -Wno-variadic-macros")
