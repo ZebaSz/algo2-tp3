@@ -34,6 +34,8 @@ protected:
     ColaPrior<Jugador> cola1;
     ColaPrior<Jugador> cola2;
 
+    ColaPrior<TuplaOrd<Jugador, nat> > cola3;
+
     ColaPrior<Jugador>::const_Iterador it;
 };
 
@@ -96,7 +98,6 @@ TEST_F(ColaPriorTest, igualdad) {
 }
 
 // --------- TESTS DEL ITERADOR ---------
-
 
 TEST_F(ColaPriorTest, itVacio) {
     it = cola1.CrearIt();

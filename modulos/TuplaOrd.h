@@ -16,16 +16,21 @@ struct TuplaOrd{
         return segun;
     }
 
-    bool operator==(const TuplaOrd<T,S>& t1) {
-        return (primer == t1.first() && t1.segun == t1.second());
+    friend bool operator==(const TuplaOrd<T,S>& t1, const TuplaOrd<T,S>& t2) {
+        return (t1.primer == t2.primer && t1.segun == t2.segun);
     }
 
-    bool operator!=(const TuplaOrd<T,S>& t1) {
-        return (primer != t1.first() || segun != t1.second());
+    friend std::ostream& operator<< (std::ostream& os, const TuplaOrd<T,S>& t1) {
+        os << '(' << t1.primer << t1.segun << ')';
+        return os;
     }
 
-    bool operator<(const TuplaOrd<T,S>& t1) {
-        return  (segun < t1.second() || (segun == t1.second() && primer < t1.first()));
+    friend bool operator!=(const TuplaOrd<T,S>& t1, const TuplaOrd<T,S>& t2) {
+        return not (t1 == t2);
+    }
+
+    friend bool operator<(const TuplaOrd<T,S>& t1, const TuplaOrd<T,S>& t2) {
+        return  (t1.segun < t2.segun || (t1.segun == t2.segun && t1.primer < t2.primer));
     }
 
     T primer;
