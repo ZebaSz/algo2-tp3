@@ -2,9 +2,11 @@
 #include "../TiposJuego.h"
 #include "../modulos/ColaPrior.h"
 #include "../aed2/Conj.h"
+#include "../modulos/TuplaOrd.h"
 
 // --------- FIXTURES ---------
 
+typedef aed2::Nat nat;
 class ColaPriorTest : public ::testing::Test {
 protected:
     virtual void SetUp() {
@@ -19,6 +21,7 @@ protected:
         js.AgregarRapido(j3);
         js.AgregarRapido(j2);
         js.AgregarRapido(j1);
+
     }
 
     Jugador j1;
@@ -47,6 +50,8 @@ TEST_F(ColaPriorTest, proximo) {
     ASSERT_EQ(j1, cola1.Proximo());
     cola1.Encolar(j2);
     ASSERT_EQ(j1, cola1.Proximo());
+    cola1.Desencolar();
+    ASSERT_EQ(j2, cola1.Proximo());
 }
 
 TEST_F(ColaPriorTest, borrar) {

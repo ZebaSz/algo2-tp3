@@ -20,6 +20,7 @@ set(SOURCE_FILES
     modulos/Mapa.h
     modulos/DiccString.h
     modulos/ConjuntoOrd.h
+    modulos/TuplaOrd.h
     modulos/ColaPrior.h)
 
 set(TEST_FILES
