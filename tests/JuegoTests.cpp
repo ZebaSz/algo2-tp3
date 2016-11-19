@@ -36,7 +36,10 @@ TEST_F(JuegoTest, coordenadasMapa) {
 }
 
 TEST_F(JuegoTest, agregarJugadores) {
-    //ASSERT_TRUE(false);
+    Juego j(m);
+    ASSERT_EQ(j.AgregarJugador(),0);
+    ASSERT_EQ(j.AgregarJugador(),1);
+    ASSERT_EQ(j.AgregarJugador(),2);
 }
 
 TEST_F(JuegoTest, agregarPokemones){

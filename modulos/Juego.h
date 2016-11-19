@@ -56,6 +56,8 @@ private:
 
     struct infoJugador {
 
+        infoJugador() : sanciones(0), conectado(false), posicion(0,0), cantPokemons(0), pokemonsCapturados()  {}
+
         aed2::Nat sanciones;
 
         bool conectado;
@@ -91,6 +93,15 @@ private:
     aed2::Arreglo<aed2::Arreglo<infoPos> > _grillaPos;
 
     aed2::Nat _cantPokemons;
+
+    //AUX FUNCTIONS
+
+    void AgregarACola(Jugador j);
+
+    void RemoverDeCola(Jugador j);
+
+    void ResetearContadores(Jugador j);
+
 
 };
 
