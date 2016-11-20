@@ -31,7 +31,6 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os, const Mapa&);
 
-    //TODO: HayPok ́emonEnDistancia
     // TESTS DE ESTR INTERNA
     friend class MapaTest_altoAncho_Test;
 

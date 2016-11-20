@@ -26,6 +26,8 @@ protected:
     Coordenada c2;
     Coordenada c3;
     aed2::Conj<Coordenada> cc;
+
+    Juego::itJugadores itJug;
 };
 
 // --------- TESTS ---------
@@ -37,11 +39,34 @@ TEST_F(JuegoTest, coordenadasMapa) {
 
 TEST_F(JuegoTest, agregarJugadores) {
     Juego j(m);
-    ASSERT_EQ(j.AgregarJugador(),0);
-    ASSERT_EQ(j.AgregarJugador(),1);
-    ASSERT_EQ(j.AgregarJugador(),2);
+    ASSERT_EQ(j.AgregarJugador(), aed2::Nat(0));
+    ASSERT_EQ(j.AgregarJugador(), aed2::Nat(1));
+    ASSERT_EQ(j.AgregarJugador(), aed2::Nat(2));
 }
 
 TEST_F(JuegoTest, agregarPokemones){
     //ASSERT_TRUE(false);
+}
+
+// --------- TESTS DEL ITERADOR ---------
+
+TEST_F(JuegoTest, jugadores) {
+    Juego j(m);
+    j.AgregarJugador();
+    j.AgregarJugador();
+    j.AgregarJugador();
+
+    itJug = j.jugadores();
+    ASSERT_TRUE(itJug.HayMas());
+    for(aed2::Nat i = 0; i < 3; ++i) {
+        ASSERT_EQ(itJug.Actual(), i);
+        itJug.Avanzar();
+    }
+    ASSERT_FALSE(itJug.HayMas());
+}
+
+TEST_F(JuegoTest, jugadoresVacio) {
+    Juego j(m);
+    itJug = j.jugadores();
+    ASSERT_FALSE(itJug.HayMas());
 }

@@ -8,8 +8,14 @@
 #include "TuplaOrd.h"
 
 class Juego {
+friend class itJugadores;
+struct infoJugador;
 public:
+    class itJugadores;
+
     Juego(const Mapa&);
+
+    ~Juego();
 
     void AgregarPokemon(Pokemon pk,Coordenada c);
 
@@ -23,7 +29,7 @@ public:
 
     const Mapa& ObtenerMapa() const;
 
-    //TODO: JUGADORES
+    itJugadores jugadores() const;
 
     bool EstaConectado(Jugador j) const;
 
@@ -33,7 +39,7 @@ public:
 
     //TODO: POKEMONS
 
-    //TODO EXPULSADOS
+    itJugadores expulsados() const;
 
     const aed2::Conj<Coordenada>& PosConPokemons() const;
 
@@ -52,6 +58,27 @@ public:
     aed2::Nat CantPokemonsTotales() const;
 
     aed2::Nat CantMismaEspecie(Pokemon pk) const;
+
+    class itJugadores {
+    friend class Juego;
+    public:
+        itJugadores();
+
+        Jugador Actual();
+
+        bool HayMas();
+
+        void Avanzar();
+
+    private:
+        itJugadores(const aed2::Vector<infoJugador*>*, bool);
+
+        const aed2::Vector<infoJugador*>* _listaJugadores;
+        aed2::Nat _contador;
+        bool _eliminados;
+    };
+
+
 private:
 
     struct infoJugador {
@@ -101,8 +128,6 @@ private:
     void RemoverDeCola(Jugador j);
 
     void ResetearContadores(Jugador j);
-
-
 };
 
 
