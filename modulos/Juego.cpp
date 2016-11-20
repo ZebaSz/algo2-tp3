@@ -3,6 +3,12 @@
 Juego::Juego(const Mapa& mapa) : _mapa(mapa) {
 }
 
+Juego::~Juego() {
+    for(aed2::Nat i = 0; i < _jugadores.Longitud(); ++i) {
+        delete _jugadores[i];
+    }
+}
+
 const Mapa &Juego::ObtenerMapa() const {
     return _mapa;
 }
@@ -44,6 +50,11 @@ void Juego::Desconectarse(Jugador j) {
     _grillaPos[c.latitud][c.longitud].jugsEnPos.Borrar(j);
 }
 
+void Juego::Moverse(Jugador j, Coordenada c) {
+    // TODO implement this function
+    assert(false);
+}
+
 bool Juego::EstaConectado(Jugador j) const {
     return _jugadores[j]->conectado;
 }
@@ -68,32 +79,93 @@ bool Juego::PuedoAgregarPokemon(Coordenada c) const {
     return _mapa.PosExistente(c);//TODO: && _mapa.HayPokemonEnDistancia(c, 5);
 }
 
+bool Juego::HayPokemonCercano(Coordenada c) const {
+    // TODO implement this function
+    assert(false);
+}
 
+Coordenada Juego::PosPokemonCercano(Coordenada c) const {
+    // TODO implement this function
+    assert(false);
+}
 
+aed2::Conj<Jugador> Juego::EntrenadoresPosibles(aed2::Conj<Jugador> es, Coordenada c) const {
+    // TODO implement this function
+    assert(false);
+}
 
+aed2::Nat Juego::IndiceRareza(Pokemon pk) const {
+    // TODO implement this function
+    assert(false);
+}
 
+aed2::Nat Juego::CantPokemonsTotales() const {
+    // TODO implement this function
+    assert(false);
+}
 
+aed2::Nat Juego::CantMismaEspecie(Pokemon pk) const {
+    // TODO implement this function
+    assert(false);
+}
 
+void Juego::AgregarACola(Jugador j) {
+    // TODO implement this function
+    assert(false);
+}
 
+void Juego::RemoverDeCola(Jugador j) {
+    // TODO implement this function
+    assert(false);
+}
 
+void Juego::ResetearContadores(Jugador j) {
+    // TODO implement this function
+    assert(false);
+}
 
+// ITERADOR DE JUGADORES
 
+Juego::itJugadores Juego::jugadores() const {
+    return Juego::itJugadores(&_jugadores, false);
+}
 
+Juego::itJugadores Juego::expulsados() const {
+    return Juego::itJugadores(&_jugadores, true);
+}
 
+Juego::itJugadores::itJugadores() {
+}
 
+Jugador Juego::itJugadores::Actual() {
+    for(Jugador i = _contador; i < _listaJugadores->Longitud(); ++i) {
+        if(((*_listaJugadores)[i]->sanciones < 5) != _eliminados) {
+            return i;
+        }
+    }
+    return 0;
+}
 
+bool Juego::itJugadores::HayMas() {
+    bool res = false;
+    for(Jugador i = _contador; i < _listaJugadores->Longitud(); ++i) {
+        if(((*_listaJugadores)[i]->sanciones < 5) != _eliminados) {
+            res = true;
+            break;
+        }
+    }
+    return res;
+}
 
+void Juego::itJugadores::Avanzar() {
+    for(Jugador i = _contador; i < _listaJugadores->Longitud(); ++i) {
+        if(((*_listaJugadores)[i]->sanciones < 5) != _eliminados) {
+            _contador = i + 1;
+            break;
+        }
+    }
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+Juego::itJugadores::itJugadores(const aed2::Vector<infoJugador*>* jugadores, bool eliminados)
+        : _listaJugadores(jugadores), _contador(0), _eliminados(eliminados) {
+}
