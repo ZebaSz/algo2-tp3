@@ -136,6 +136,7 @@ private:
     aed2::Conj<Coordenada> PosicionesEnRango(Coordenada coor, aed2::Nat n) const;
 
     aed2::Nat Disteuclidea(Coordenada c1, Coordenada c2) const;
+
 };
 
 

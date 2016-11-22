@@ -145,7 +145,7 @@ bool Juego::HayPokemonEnDistancia(Coordenada c, aed2::Nat n) const {
         }
         itCoor.Avanzar();
     }
-    return true;
+    return res;
 }
 
 aed2::Conj<Coordenada> Juego::PosicionesEnRango(Coordenada c, aed2::Nat n) const {
@@ -176,7 +176,27 @@ aed2::Conj<Coordenada> Juego::PosicionesEnRango(Coordenada c, aed2::Nat n) const
             }
         }
     }
+    return res;
+}
 
+bool Juego::HayPokemonEnPos(Coordenada c) const {
+    return _grillaPos[c.latitud][c.longitud].hayPokemon;
+}
+
+aed2::Nat Juego::Disteuclidea(Coordenada c1, Coordenada c2) const {
+    aed2::Nat  la = 0;
+    aed2::Nat  lo = 0;
+    if (c1.latitud > c2.latitud){
+        la = (c1.latitud - c2.latitud) * (c1.latitud - c2.latitud);
+    } else {
+        la = (c2.latitud - c1.latitud) * (c2.latitud - c1.latitud);
+    }
+    if (c1.longitud > c2.longitud){
+        la = (c1.longitud - c2.longitud) * (c1.longitud - c2.longitud);
+    } else {
+        la = (c2.longitud - c1.longitud) * (c2.longitud - c1.longitud);
+    }
+    return la + lo;
 }
 
 
