@@ -134,6 +134,52 @@ Juego::itJugadores Juego::expulsados() const {
     return Juego::itJugadores(&_jugadores, true);
 }
 
+bool Juego::HayPokemonEnDistancia(Coordenada c, aed2::Nat n) const {
+    bool res = false;
+    aed2::Conj<Coordenada> coorEnRango = PosicionesEnRango(c, n);
+    aed2::Conj<Coordenada>::Iterador itCoor = coorEnRango.CrearIt();
+    while (itCoor.HaySiguiente()) {
+        Coordenada siguiente = itCoor.Siguiente();
+        if (HayPokemonEnPos(siguiente)) {
+            res = true;
+        }
+        itCoor.Avanzar();
+    }
+    return true;
+}
+
+aed2::Conj<Coordenada> Juego::PosicionesEnRango(Coordenada c, aed2::Nat n) const {
+    aed2::Conj<Coordenada> res;
+    for(aed2::Nat i = 0; i < n; ++i) {
+        for(aed2::Nat j = 0; j < n; ++j) {
+            Coordenada ne = Coordenada(c.latitud + i, c.longitud + j);
+            if (Disteuclidea(c, ne) <= n*n && _mapa.PosExistente(ne)) {
+             res.AgregarRapido(ne);
+            }
+            if (c.longitud > j) {
+                Coordenada no = Coordenada(c.latitud + i, c.longitud - j);
+                if (Disteuclidea(c, no) <= n*n && _mapa.PosExistente(no)) {
+                    res.AgregarRapido(no);
+                }
+            }
+            if (c.latitud > i) {
+                Coordenada se = Coordenada(c.latitud - i, c.longitud + j);
+                if (Disteuclidea(c, se) <= n*n && _mapa.PosExistente(se)) {
+                    res.AgregarRapido(se);
+                }
+            }
+            if (c.latitud > i && c.longitud > j) {
+                Coordenada so = Coordenada(c.latitud - i, c.longitud - j);
+                if (Disteuclidea(c, so) <= n*n && _mapa.PosExistente(so)) {
+                    res.AgregarRapido(so);
+                }
+            }
+        }
+    }
+
+}
+
+
 Juego::itJugadores::itJugadores() {
 }
 

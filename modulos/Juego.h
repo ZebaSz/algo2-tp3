@@ -128,6 +128,14 @@ private:
     void RemoverDeCola(Jugador j);
 
     void ResetearContadores(Jugador j);
+
+    bool HayPokemonEnDistancia(Coordenada c, aed2::Nat n) const;
+
+    bool HayPokemonEnPos(Coordenada c) const;
+
+    aed2::Conj<Coordenada> PosicionesEnRango(Coordenada coor, aed2::Nat n) const;
+
+    aed2::Nat Disteuclidea(Coordenada c1, Coordenada c2) const;
 };
 
 
