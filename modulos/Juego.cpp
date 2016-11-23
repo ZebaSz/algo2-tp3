@@ -116,8 +116,17 @@ aed2::Nat Juego::CantMismaEspecie(Pokemon pk) const {
 }
 
 void Juego::AgregarACola(Jugador j) {
-    // TODO implement this function
-    assert(false);
+    Coordenada c = _jugadores[j]->posicion;
+    aed2::Conj<Coordenada> coorEnRango = PosicionesEnRango(c, 2);
+    aed2::Conj<Coordenada>::const_Iterador itCoor = coorEnRango.CrearIt();
+    while(itCoor.HaySiguiente()) {
+        Coordenada siguiente = itCoor.Siguiente();
+        if(HayPokemonEnPos(siguiente)) {
+            _grillaPos[siguiente.latitud][siguiente.longitud].jugsEsperandoCaptura
+                    .Encolar(TuplaOrd<Jugador, aed2::Nat>(j, _jugadores[j]->cantPokemons));
+        }
+        itCoor.Avanzar();
+    }
 }
 
 void Juego::RemoverDeCola(Jugador j) {
@@ -126,8 +135,17 @@ void Juego::RemoverDeCola(Jugador j) {
 }
 
 void Juego::ResetearContadores(Jugador j) {
-    // TODO implement this function
-    assert(false);
+
+    Coordenada c = _jugadores[j]->posicion;
+    aed2::Conj<Coordenada> coorEnRango = PosicionesEnRango(c, 2);
+    aed2::Conj<Coordenada>::const_Iterador itCoor = coorEnRango.CrearIt();
+    while(itCoor.HaySiguiente()) {
+        Coordenada siguiente = itCoor.Siguiente();
+        if(HayPokemonEnPos(siguiente)) {
+            _grillaPos[siguiente.latitud][siguiente.longitud].contadorCaptura = 0;
+        }
+        itCoor.Avanzar();
+    }
 }
 
 // ITERADOR DE JUGADORES
