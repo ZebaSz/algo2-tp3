@@ -1,6 +1,12 @@
 #include "Juego.h"
 
-Juego::Juego(const Mapa& mapa) : _mapa(mapa) {
+Juego::Juego(const Mapa& mapa) : _mapa(mapa), _grillaPos(mapa.Alto()), _cantPokemons(0) {
+    for(aed2::Nat i = 0; i < mapa.Alto(); ++i) {
+        _grillaPos.Definir(i, aed2::Arreglo<infoPos>(mapa.Ancho()));
+        for(aed2::Nat j = 0; j < mapa.Ancho(); ++j) {
+            _grillaPos[i].Definir(j, infoPos());
+        }
+    }
 }
 
 Juego::~Juego() {

@@ -40,14 +40,63 @@ TEST_F(JuegoTest, coordenadasMapa) {
 TEST_F(JuegoTest, agregarJugadores) {
     Juego j(m);
     ASSERT_EQ(j.AgregarJugador(), aed2::Nat(0));
+    ASSERT_FALSE(j.EstaConectado(aed2::Nat(0)));
     ASSERT_EQ(j.AgregarJugador(), aed2::Nat(1));
+    ASSERT_FALSE(j.EstaConectado(aed2::Nat(0)));
+    ASSERT_FALSE(j.EstaConectado(aed2::Nat(1)));
     ASSERT_EQ(j.AgregarJugador(), aed2::Nat(2));
+    ASSERT_FALSE(j.EstaConectado(aed2::Nat(0)));
+    ASSERT_FALSE(j.EstaConectado(aed2::Nat(1)));
+    ASSERT_FALSE(j.EstaConectado(aed2::Nat(2)));
 }
 
-TEST_F(JuegoTest, agregarPokemones){
-    //ASSERT_TRUE(false);
-}
+/*TEST_F(JuegoTest, agregarPokemones){
+    Juego j(m);
+    ASSERT_TRUE(j.PosConPokemons().EsVacio());
+    j.AgregarPokemon("pikachu", c1);
+    ASSERT_EQ(j.CantPokemonsTotales(), aed2::Nat(1));
+    ASSERT_EQ(j.PokemonEnPos(c1), "pikachu");
+    ASSERT_EQ(j.PosConPokemons().Cardinal(), aed2::Nat(1));
+    ASSERT_TRUE(j.PosConPokemons().Pertenece(c1));
+    j.AgregarPokemon("squirtle", c3);
+    ASSERT_EQ(j.CantPokemonsTotales(), aed2::Nat(2));
+    ASSERT_EQ(j.PokemonEnPos(c3), "squirtle");
+    ASSERT_EQ(j.PokemonEnPos(c1), "pikachu");
+    ASSERT_EQ(j.PosConPokemons().Cardinal(), aed2::Nat(2));
+    ASSERT_TRUE(j.PosConPokemons().Pertenece(c1));
+    ASSERT_TRUE(j.PosConPokemons().Pertenece(c3));
+}*/
 
+TEST_F(JuegoTest, conectarIgualdad) {
+    Juego j(m);
+    ASSERT_EQ(j.AgregarJugador(), aed2::Nat(0));
+    ASSERT_FALSE(j.EstaConectado(aed2::Nat(0)));
+    j.Conectarse(aed2::Nat(0), c1);
+    ASSERT_TRUE(j.EstaConectado(aed2::Nat(0)));
+    ASSERT_EQ(j.Posicion(aed2::Nat(0)), c1);
+    j.Desconectarse(aed2::Nat(0));
+    ASSERT_FALSE(j.EstaConectado(aed2::Nat(0)));
+    ASSERT_EQ(j.AgregarJugador(), aed2::Nat(1));
+    ASSERT_FALSE(j.EstaConectado(aed2::Nat(0)));
+    ASSERT_FALSE(j.EstaConectado(aed2::Nat(1)));
+    j.Conectarse(aed2::Nat(1), c1);
+    ASSERT_TRUE(j.EstaConectado(aed2::Nat(1)));
+    ASSERT_FALSE(j.EstaConectado(aed2::Nat(0)));
+    ASSERT_EQ(j.Posicion(aed2::Nat(1)), c1);
+    j.Conectarse(aed2::Nat(0), c3);
+    ASSERT_TRUE(j.EstaConectado(aed2::Nat(0)));
+    ASSERT_EQ(j.Posicion(aed2::Nat(0)), c3);
+    ASSERT_TRUE(j.EstaConectado(aed2::Nat(1)));
+    ASSERT_EQ(j.Posicion(aed2::Nat(1)), c1);
+    j.Desconectarse(aed2::Nat(1));
+    ASSERT_FALSE(j.EstaConectado(aed2::Nat(1)));
+    ASSERT_TRUE(j.EstaConectado(aed2::Nat(0)));
+    ASSERT_EQ(j.Posicion(aed2::Nat(0)), c3);
+    j.Desconectarse(aed2::Nat(0));
+    ASSERT_FALSE(j.EstaConectado(aed2::Nat(0)));
+    ASSERT_FALSE(j.EstaConectado(aed2::Nat(1)));
+
+}
 // --------- TESTS DEL ITERADOR ---------
 
 TEST_F(JuegoTest, jugadores) {

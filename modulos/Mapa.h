@@ -21,9 +21,9 @@ public:
 
     bool HayCamino(const Coordenada&, const Coordenada&) const;
 
-    aed2::Nat Alto();
+    aed2::Nat Alto() const;
 
-    aed2::Nat Ancho();
+    aed2::Nat Ancho() const;
 
     friend bool operator==(const Mapa&, const Mapa&);
 
