@@ -58,11 +58,11 @@ bool Mapa::HayCamino(const Coordenada& c1, const Coordenada& c2) const {
     return _posiciones[c1.latitud][c1.longitud].grupo == _posiciones[c2.latitud][c2.longitud].grupo;
 }
 
-aed2::Nat Mapa::Alto() {
+aed2::Nat Mapa::Alto() const {
     return _alto;
 }
 
-aed2::Nat Mapa::Ancho() {
+aed2::Nat Mapa::Ancho() const {
     return _ancho;
 }
 
