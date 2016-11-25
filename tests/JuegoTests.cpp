@@ -108,6 +108,34 @@ TEST_F(JuegoTest, conectarIgualdad) {
 
 }
 
+
+TEST_F(JuegoTest, pitanaSancionar) {
+    Juego j(m);
+    ASSERT_EQ(j.AgregarJugador(), aed2::Nat(0));
+    j.Conectarse(aed2::Nat(0), c3);
+    ASSERT_TRUE(j.EstaConectado(aed2::Nat(0)));
+    ASSERT_EQ(j.Posicion(aed2::Nat(0)), c3);
+    ASSERT_EQ(j.Sanciones(aed2::Nat(0)), aed2::Nat(0));
+    j.Moverse(aed2::Nat(0), c1);
+    ASSERT_TRUE(j.EstaConectado(aed2::Nat(0)));
+    ASSERT_EQ(j.Posicion(aed2::Nat(0)), c1);
+    ASSERT_EQ(j.Sanciones(aed2::Nat(0)), aed2::Nat(1));
+    j.Moverse(aed2::Nat(0), c3);
+    ASSERT_TRUE(j.EstaConectado(aed2::Nat(0)));
+    ASSERT_EQ(j.Posicion(aed2::Nat(0)), c3);
+    ASSERT_EQ(j.Sanciones(aed2::Nat(0)), aed2::Nat(2));
+    j.Moverse(aed2::Nat(0), c1);
+    ASSERT_TRUE(j.EstaConectado(aed2::Nat(0)));
+    ASSERT_EQ(j.Posicion(aed2::Nat(0)), c1);
+    ASSERT_EQ(j.Sanciones(aed2::Nat(0)), aed2::Nat(3));
+    j.Moverse(aed2::Nat(0), c3);
+    ASSERT_TRUE(j.EstaConectado(aed2::Nat(0)));
+    ASSERT_EQ(j.Posicion(aed2::Nat(0)), c3);
+    ASSERT_EQ(j.Sanciones(aed2::Nat(0)), aed2::Nat(4));
+    j.Moverse(aed2::Nat(0), c1);
+    ASSERT_FALSE(j.EstaConectado(aed2::Nat(0)));
+    ASSERT_EQ(j.Sanciones(aed2::Nat(0)), aed2::Nat(5));
+}
 // --------- TESTS DEL ITERADOR ---------
 
 TEST_F(JuegoTest, jugadores) {
