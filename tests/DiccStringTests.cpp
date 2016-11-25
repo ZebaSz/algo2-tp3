@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 #include "../TiposJuego.h"
-#include "../modulos/DiccString.h"
+#include "../DiccString.h"
 
 // --------- FIXTURES ---------
 

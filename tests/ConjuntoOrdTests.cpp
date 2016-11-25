@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 #include "../TiposJuego.h"
-#include "../modulos/ConjuntoOrd.h"
+#include "../ConjuntoOrd.h"
 #include "../aed2/Conj.h"
 
 // --------- FIXTURES ---------

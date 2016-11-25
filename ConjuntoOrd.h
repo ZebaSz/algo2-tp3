@@ -1,8 +1,8 @@
 #ifndef CONJ_ORD_H
 #define CONJ_ORD_H
 
-#include "../aed2/TiposBasicos.h"
-#include "../aed2/Lista.h"
+#include "aed2/TiposBasicos.h"
+#include "aed2/Lista.h"
 #include <iostream>
 
 template<typename T>

@@ -1,8 +1,8 @@
 #include "gtest/gtest.h"
 #include "../TiposJuego.h"
-#include "../modulos/ColaPrior.h"
+#include "../ColaPrior.h"
 #include "../aed2/Conj.h"
-#include "../modulos/TuplaOrd.h"
+#include "../TuplaOrd.h"
 
 // --------- FIXTURES ---------
 

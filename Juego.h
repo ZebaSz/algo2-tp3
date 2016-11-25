@@ -2,7 +2,7 @@
 #define ALGO2_TP3_JUEGO_H
 
 #include "Mapa.h"
-#include "../TiposJuego.h"
+#include "TiposJuego.h"
 #include "DiccString.h"
 #include "ColaPrior.h"
 #include "TuplaOrd.h"

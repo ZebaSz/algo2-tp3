@@ -14,14 +14,14 @@ set(SOURCE_FILES
     Driver.cpp
     Driver.h
     TiposJuego.h
-    modulos/Juego.cpp
-    modulos/Juego.h
-    modulos/Mapa.cpp
-    modulos/Mapa.h
-    modulos/DiccString.h
-    modulos/ConjuntoOrd.h
-    modulos/TuplaOrd.h
-    modulos/ColaPrior.h)
+        Juego.cpp
+        Juego.h
+        Mapa.cpp
+        Mapa.h
+        DiccString.h
+        ConjuntoOrd.h
+        TuplaOrd.h
+        ColaPrior.h)
 
 set(TEST_FILES
     tests/MapaTests.cpp

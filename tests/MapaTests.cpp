@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 #include "../aed2/Conj.h"
-#include "../modulos/Mapa.h"
+#include "../Mapa.h"
 
 // --------- FIXTURES ---------
 

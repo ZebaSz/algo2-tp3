@@ -1,9 +1,9 @@
 #ifndef ALGO2_TP3_MAPA_H
 #define ALGO2_TP3_MAPA_H
 
-#include "../aed2/Conj.h"
-#include "../aed2/Vector.h"
-#include "../TiposJuego.h"
+#include "aed2/Conj.h"
+#include "aed2/Vector.h"
+#include "TiposJuego.h"
 
 class Mapa {
 private:

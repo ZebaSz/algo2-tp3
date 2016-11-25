@@ -1,7 +1,7 @@
 #ifndef COLA_PRIOR_H
 #define COLA_PRIOR_H
 
-#include "../modulos/ConjuntoOrd.h"
+#include "ConjuntoOrd.h"
 #include <iostream>
 
 

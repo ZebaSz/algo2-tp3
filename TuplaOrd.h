@@ -1,7 +1,7 @@
 #ifndef TUPLA_ORD_H
 #define TUPLA_ORD_H
 
-#include "../aed2/TiposBasicos.h"
+#include "aed2/TiposBasicos.h"
 #include <iostream>
 
 template<typename T, typename S>

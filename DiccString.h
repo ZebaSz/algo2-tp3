@@ -1,7 +1,7 @@
 #ifndef DICC_STRING_H_
 #define DICC_STRING_H_
 
-#include "../aed2/Conj.h"
+#include "aed2/Conj.h"
 #include <iostream>
 
 template<typename T>
