@@ -20,19 +20,30 @@ const Mapa &Juego::ObtenerMapa() const {
 }
 
 void Juego::AgregarPokemon(Pokemon pk, Coordenada c) {
-    /*
-    _cantPokemons++;
-    if(_pokemons.Definido(pk)){
+    ++_cantPokemons;
+    if (_pokemons.Definido(pk)){
         aed2::Nat nuevaCant = _pokemons.Obtener(pk) + 1;
         _pokemons.Definir(pk, nuevaCant);
-    }else{
+    } else {
         _pokemons.Definir(pk, 1);
     }
     _grillaPos[c.latitud][c.longitud].hayPokemon = true;
     _grillaPos[c.latitud][c.longitud].pokemon = pk;
     _grillaPos[c.latitud][c.longitud].contadorCaptura = 0;
-    //TODO: ACA HAY QUE BORRAR LA COLA ANTERIOR
-     */
+    //_grillaPos[c.latitud][c.longitud].jugsEsperandoCaptura; TODO ¿constructor vacio?
+    aed2::Conj<Coordenada> coorEnRango = PosicionesEnRango(c, 2);
+    aed2::Conj<Coordenada>::Iterador itCoor = coorEnRango.CrearIt();
+    while (itCoor.HaySiguiente()){
+        Coordenada d = itCoor.Siguiente();
+        ConjuntoOrd<Jugador>::const_Iterador it = _grillaPos[d.latitud][d.longitud].jugsEnPos.CrearIt();
+        while (it.HayMas()) {
+            Jugador jug = it.Actual();
+            TuplaOrd<Jugador, aed2::Nat> tuplaJug(jug , _jugadores[jug]->cantPokemons);
+            _grillaPos[c.latitud][c.longitud].jugsEsperandoCaptura.Encolar(tuplaJug);
+            it.Avanzar();
+        }
+        itCoor.Avanzar();
+    }
 }
 
 aed2::Nat Juego::AgregarJugador() {
@@ -57,8 +68,58 @@ void Juego::Desconectarse(Jugador j) {
 }
 
 void Juego::Moverse(Jugador j, Coordenada c) {
-    // TODO implement this function
-    assert(false);
+    Coordenada posAnterior = _jugadores[j]->posicion;
+    _grillaPos[posAnterior.latitud][posAnterior.longitud].jugsEnPos.Borrar(j);
+    RemoverDeCola(j);
+    if(!_mapa.HayCamino(posAnterior, c) || posAnterior.DistEuclidea(c) > 100){
+        _jugadores[j]->sanciones++;
+    }
+    if (_jugadores[j]->sanciones == 5){
+        DiccString<aed2::Nat>::const_Iterador pokesABorrar = _jugadores[j]->pokemonsCapturados.CrearIt();
+        while (pokesABorrar.HaySiguiente()){
+            TuplaOrd<std::string, aed2::Nat> sig("corregime careta", 0); //TODO esto es pa que compile
+            //TuplaOrd<std::string, aed2::Nat> sig = pokesABorrar.Siguiente(); //TODO el iterador solo saca el significado, no la clave.
+            aed2::Nat nuevaCant = _pokemons.Obtener(sig.first()) - sig.second();
+            if (nuevaCant == 0){
+                _pokemons.Borrar(sig.first());
+            } else {
+                _pokemons.Definir(sig.first(), nuevaCant);
+            }
+            _cantPokemons = _cantPokemons - sig.second();
+            pokesABorrar.Avanzar();
+        }
+    } else {
+        _jugadores[j]->posicion = c;
+        AgregarACola(j);
+        _grillaPos[c.latitud][c.longitud].jugsEnPos.Agregar(j);
+    }
+    aed2::Conj<Coordenada>::Iterador itPos = _posConPokemons.CrearIt();
+    while(itPos.HaySiguiente()){
+        Coordenada coorConPk = itPos.Siguiente();
+        if (c.DistEuclidea(coorConPk) > 4){
+            _grillaPos[coorConPk.latitud][coorConPk.longitud].contadorCaptura++;
+            infoPos posPk = _grillaPos[coorConPk.latitud][coorConPk.longitud];
+            if (posPk.contadorCaptura == 10){
+                Pokemon pk = posPk.pokemon;
+                Jugador captor = posPk.jugsEsperandoCaptura.Proximo().first();
+                _jugadores[captor]->cantPokemons++;
+                if (_jugadores[captor]->pokemonsCapturados.Definido(pk)){
+                    aed2::Nat nuevaCant =_jugadores[captor]->pokemonsCapturados.Obtener(pk) + 1;
+                    _jugadores[captor]->pokemonsCapturados.Definir(pk, nuevaCant);
+                } else {
+                    _jugadores[captor]->pokemonsCapturados.Definir(pk, 1);
+                }
+                itPos.EliminarSiguiente();
+            } else{
+                itPos.Avanzar();
+            }
+        } else{
+            if (posAnterior.DistEuclidea(coorConPk) > 4){
+                _grillaPos[coorConPk.latitud][coorConPk.longitud].contadorCaptura = 0;
+            }
+            itPos.Avanzar();
+        }
+    }
 }
 
 bool Juego::EstaConectado(Jugador j) const {
@@ -82,37 +143,48 @@ const Pokemon &Juego::PokemonEnPos(Coordenada c) const {
 }
 
 bool Juego::PuedoAgregarPokemon(Coordenada c) const {
-    return _mapa.PosExistente(c);//TODO: && _mapa.HayPokemonEnDistancia(c, 5);
+    return (_mapa.PosExistente(c) && HayPokemonEnDistancia(c,5));
 }
 
 bool Juego::HayPokemonCercano(Coordenada c) const {
-    // TODO implement this function
-    assert(false);
+    return HayPokemonEnDistancia(c,2);
 }
 
 Coordenada Juego::PosPokemonCercano(Coordenada c) const {
-    // TODO implement this function
-    assert(false);
+    aed2::Conj<Coordenada> coorEnRango = PosicionesEnRango(c,2);
+    aed2::Conj<Coordenada>::const_Iterador itCoor = coorEnRango.CrearIt();
+    while(itCoor.HaySiguiente()){
+        Coordenada siguiente = itCoor.Siguiente();
+        if(HayPokemonEnPos(siguiente)){
+            return siguiente;
+        }
+        itCoor.Avanzar();
+    }
 }
 
 aed2::Conj<Jugador> Juego::EntrenadoresPosibles(aed2::Conj<Jugador> es, Coordenada c) const {
-    // TODO implement this function
-    assert(false);
+    aed2::Conj<Jugador> conjJug;
+    ColaPrior<TuplaOrd<Jugador, aed2::Nat > >::const_Iterador itEntrenadores = _grillaPos[c.latitud][c.longitud].jugsEsperandoCaptura.CrearIt();
+    while(itEntrenadores.HayMas()){
+        Jugador actual = itEntrenadores.Actual().first();
+        if (es.Pertenece(actual)){
+            conjJug.AgregarRapido(actual);
+        }
+    }
+    return conjJug;
 }
 
 aed2::Nat Juego::IndiceRareza(Pokemon pk) const {
-    // TODO implement this function
-    assert(false);
+    aed2::Nat cantPk = 100 - (CantMismaEspecie(pk)*100/_cantPokemons);
+    return cantPk;
 }
 
 aed2::Nat Juego::CantPokemonsTotales() const {
-    // TODO implement this function
-    assert(false);
+    return _cantPokemons;
 }
 
 aed2::Nat Juego::CantMismaEspecie(Pokemon pk) const {
-    // TODO implement this function
-    assert(false);
+    return _pokemons.Obtener(pk);
 }
 
 void Juego::AgregarACola(Jugador j) {
@@ -130,12 +202,20 @@ void Juego::AgregarACola(Jugador j) {
 }
 
 void Juego::RemoverDeCola(Jugador j) {
-    // TODO implement this function
-    assert(false);
+    Coordenada c = _jugadores[j]->posicion;
+    aed2::Conj<Coordenada> coorEnRango = PosicionesEnRango(c,2);
+    aed2::Conj<Coordenada>::const_Iterador itCoor = coorEnRango.CrearIt();
+    while (itCoor.HaySiguiente()){
+        Coordenada siguiente = itCoor.Siguiente();
+        if (HayPokemonEnPos(siguiente)){
+            TuplaOrd<Jugador, aed2::Nat> tuplaJug(j, _jugadores[j]->cantPokemons);
+            _grillaPos[siguiente.latitud][siguiente.longitud].jugsEsperandoCaptura.Borrar(tuplaJug);
+        }
+        itCoor.Avanzar();
+    }
 }
 
 void Juego::ResetearContadores(Jugador j) {
-
     Coordenada c = _jugadores[j]->posicion;
     aed2::Conj<Coordenada> coorEnRango = PosicionesEnRango(c, 2);
     aed2::Conj<Coordenada>::const_Iterador itCoor = coorEnRango.CrearIt();
@@ -173,56 +253,40 @@ bool Juego::HayPokemonEnDistancia(Coordenada c, aed2::Nat n) const {
 }
 
 aed2::Conj<Coordenada> Juego::PosicionesEnRango(Coordenada c, aed2::Nat n) const {
-    aed2::Conj<Coordenada> res;
-    for(aed2::Nat i = 0; i < n; ++i) {
-        for(aed2::Nat j = 0; j < n; ++j) {
-            Coordenada ne = Coordenada(c.latitud + i, c.longitud + j);
-            if (Disteuclidea(c, ne) <= n*n && _mapa.PosExistente(ne)) {
-             res.AgregarRapido(ne);
+    aed2::Conj<Coordenada> conjRes;
+    int i;
+    for(int i = 0; i < n; i++){
+        for (int j = 0; j < n; j++){
+            Coordenada ne(c.latitud + i, c.longitud + j);
+            if (ne.DistEuclidea(c) <= n*n && _mapa.PosExistente(ne)){
+                conjRes.AgregarRapido(ne);
             }
-            if (c.longitud > j) {
-                Coordenada no = Coordenada(c.latitud + i, c.longitud - j);
-                if (Disteuclidea(c, no) <= n*n && _mapa.PosExistente(no)) {
-                    res.AgregarRapido(no);
+            if (c.longitud > j){
+                Coordenada no(c.latitud + i, c.longitud - j);
+                if (no.DistEuclidea(c) <= n*n && _mapa.PosExistente(no)){
+                    conjRes.AgregarRapido(no);
                 }
             }
-            if (c.latitud > i) {
-                Coordenada se = Coordenada(c.latitud - i, c.longitud + j);
-                if (Disteuclidea(c, se) <= n*n && _mapa.PosExistente(se)) {
-                    res.AgregarRapido(se);
+            if (c.latitud > i){
+                Coordenada se(c.latitud - i, c.longitud + j);
+                if (se.DistEuclidea(c) <= n*n && _mapa.PosExistente(se)){
+                    conjRes.AgregarRapido(se);
                 }
             }
-            if (c.latitud > i && c.longitud > j) {
-                Coordenada so = Coordenada(c.latitud - i, c.longitud - j);
-                if (Disteuclidea(c, so) <= n*n && _mapa.PosExistente(so)) {
-                    res.AgregarRapido(so);
+            if (c.longitud > j && c.latitud > i){
+                Coordenada so(c.latitud - i, c.longitud - j);
+                if (so.DistEuclidea(c) <= n*n && _mapa.PosExistente(so)){
+                    conjRes.AgregarRapido(so);
                 }
             }
         }
     }
-    return res;
+    return conjRes;
 }
 
 bool Juego::HayPokemonEnPos(Coordenada c) const {
     return _grillaPos[c.latitud][c.longitud].hayPokemon;
 }
-
-aed2::Nat Juego::Disteuclidea(Coordenada c1, Coordenada c2) const {
-    aed2::Nat  la = 0;
-    aed2::Nat  lo = 0;
-    if (c1.latitud > c2.latitud){
-        la = (c1.latitud - c2.latitud) * (c1.latitud - c2.latitud);
-    } else {
-        la = (c2.latitud - c1.latitud) * (c2.latitud - c1.latitud);
-    }
-    if (c1.longitud > c2.longitud){
-        la = (c1.longitud - c2.longitud) * (c1.longitud - c2.longitud);
-    } else {
-        la = (c2.longitud - c1.longitud) * (c2.longitud - c1.longitud);
-    }
-    return la + lo;
-}
-
 
 Juego::itJugadores::itJugadores() {
 }
