@@ -54,7 +54,18 @@ public:
     aed2::Nat CantMismaEspecie(Pokemon pk) const;
 private:
 
+    aed2::Conj<Coordenada> PosicionesEnRango (Coordenada c, aed2::Nat n);
+
+    void AgregarACola(Jugador j);
+
+    void RemoverDeCola(Jugador j);
+
+    void ResetearContadores(Jugador j);
+
     struct infoJugador {
+
+        infoJugador(): sanciones(0), conectado(false), cantPokemons(0), posicion(0,0){
+        }
 
         aed2::Nat sanciones;
 

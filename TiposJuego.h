@@ -14,6 +14,22 @@ struct Coordenada
 	{
 	}
 
+    const aed2::Nat DistEuclidea (Coordenada otra) const {
+        aed2::Nat la = 0;
+        aed2::Nat lo = 0;
+        if(latitud > otra.latitud){
+            la = (latitud - otra.latitud)*(latitud - otra.latitud);
+        } else {
+            la = (otra.latitud - latitud)*(otra.latitud - latitud);
+        }
+        if(longitud > otra.longitud){
+            lo = (longitud - otra.longitud)*(longitud - otra.longitud);
+        } else {
+            lo = (otra.longitud - longitud)*(otra.longitud - longitud);
+        }
+        return la + lo;
+    }
+
     friend std::ostream& operator<< (std::ostream& os, const Coordenada& c) {
         os << '(' << c.latitud << c.longitud << ')';
         return os;

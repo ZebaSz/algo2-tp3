@@ -33,6 +33,7 @@ struct TuplaOrd{
         return  (t1.segun < t2.segun || (t1.segun == t2.segun && t1.primer < t2.primer));
     }
 
+private:
     T primer;
     S segun;
 };
