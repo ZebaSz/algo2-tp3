@@ -6,7 +6,7 @@
 
 class JuegoTest : public ::testing::Test {
 public:
-    JuegoTest() : c1(0,0), c2(1,2), c3(10,0) {}
+    JuegoTest() : c1(0,0), c2(1,2), c3(10,0), c4(1,3) {}
 protected:
     virtual void SetUp() {
         cc.Agregar(c1);
@@ -14,6 +14,7 @@ protected:
         cc.Agregar(Coordenada(0,2));
         cc.Agregar(c2);
         cc.Agregar(c3);
+        cc.Agregar(c4);
         cc.Agregar(Coordenada(1,4));
         aed2::Conj<Coordenada>::const_Iterador it;
         for(it = cc.CrearIt(); it.HaySiguiente(); it.Avanzar()) {
@@ -35,6 +36,7 @@ protected:
     Coordenada c1;
     Coordenada c2;
     Coordenada c3;
+    Coordenada c4;
     aed2::Conj<Coordenada> cc;
 
     Juego::itJugadores itJug;
@@ -166,6 +168,41 @@ TEST_F(JuegoTest, pitanaSancionar) {
     ASSERT_EQ(j.Posicion(jug2), c3);
     ASSERT_EQ(j.Sanciones(jug2), aed2::Nat(4));
 }
+
+TEST_F(JuegoTest, colaEspera) {
+    Juego j(m);
+    Jugador e1 = j.AgregarJugador();
+    Jugador e2 = j.AgregarJugador();
+    Jugador e3 = j.AgregarJugador();
+
+    j.Conectarse(e1, c1);
+    j.Conectarse(e2, c1);
+    j.Conectarse(e3, c1);
+
+    j.AgregarPokemon("Pikachu", c1);
+
+    aed2::Conj<Jugador> jugadores;
+    jugadores.AgregarRapido(e1);
+    jugadores.AgregarRapido(e2);
+    jugadores.AgregarRapido(e3);
+    ASSERT_EQ(j.EntrenadoresPosibles(jugadores, c1), jugadores);
+
+    for(int i = 0; i < 10; ++i) {
+        if(j.Posicion(e3) == c2) {
+            j.Moverse(e3, c4);
+        } else {
+            j.Moverse(e3, c2);
+        }
+    }
+    ASSERT_FALSE(j.HayPokemonCercano(c1));
+
+    j.Moverse(e1, c4);
+    j.Moverse(e2, c4);
+    j.Moverse(e3, c4);
+    j.AgregarPokemon("Pikachu", c1);
+    ASSERT_TRUE(j.EntrenadoresPosibles(jugadores, c1).EsVacio());
+}
+
 // --------- TESTS DEL ITERADOR ---------
 
 TEST_F(JuegoTest, jugadores) {

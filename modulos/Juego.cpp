@@ -98,7 +98,7 @@ void Juego::Moverse(Jugador j, Coordenada c) {
         Coordenada coorConPk = itPos.Siguiente();
         if (c.DistEuclidea(coorConPk) > 4){
             _grillaPos[coorConPk.latitud][coorConPk.longitud].contadorCaptura++;
-            infoPos posPk = _grillaPos[coorConPk.latitud][coorConPk.longitud];
+            infoPos& posPk = _grillaPos[coorConPk.latitud][coorConPk.longitud];
             if (posPk.contadorCaptura == 10){
                 Pokemon pk = posPk.pokemon;
                 Jugador captor = posPk.jugsEsperandoCaptura.Proximo().first();
@@ -109,6 +109,7 @@ void Juego::Moverse(Jugador j, Coordenada c) {
                 } else {
                     _jugadores[captor]->pokemonsCapturados.Definir(pk, 1);
                 }
+                posPk.hayPokemon = false;
                 itPos.EliminarSiguiente();
             } else{
                 itPos.Avanzar();
@@ -176,6 +177,7 @@ aed2::Conj<Jugador> Juego::EntrenadoresPosibles(aed2::Conj<Jugador> es, Coordena
         if (es.Pertenece(actual)){
             conjJug.AgregarRapido(actual);
         }
+        itEntrenadores.Avanzar();
     }
     return conjJug;
 }
