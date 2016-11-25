@@ -121,12 +121,6 @@ private:
 
     Mapa conjAMapa(const Conj<Coordenada>&);
 
-	/************************************************************************
-	 * TODO: Va a ser necesario instanciar privadamente el Modulo principal *
-	 * con el cuál interactuar. Además, pueden declarar todas las		   *
-	 * funciones auxiliares que les hagan falta.							*
-	 ************************************************************************/  
-
 }; // class Driver
 
 

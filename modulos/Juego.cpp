@@ -30,7 +30,7 @@ void Juego::AgregarPokemon(Pokemon pk, Coordenada c) {
     _grillaPos[c.latitud][c.longitud].hayPokemon = true;
     _grillaPos[c.latitud][c.longitud].pokemon = pk;
     _grillaPos[c.latitud][c.longitud].contadorCaptura = 0;
-    //_grillaPos[c.latitud][c.longitud].jugsEsperandoCaptura; TODO ¿constructor vacio?
+    _grillaPos[c.latitud][c.longitud].jugsEsperandoCaptura = ColaPrior< TuplaOrd<Jugador, aed2::Nat> >();
     aed2::Conj<Coordenada> coorEnRango = PosicionesEnRango(c, 2);
     aed2::Conj<Coordenada>::Iterador itCoor = coorEnRango.CrearIt();
     while (itCoor.HaySiguiente()){
@@ -44,6 +44,7 @@ void Juego::AgregarPokemon(Pokemon pk, Coordenada c) {
         }
         itCoor.Avanzar();
     }
+    _posConPokemons.AgregarRapido(c);
 }
 
 aed2::Nat Juego::AgregarJugador() {
@@ -69,26 +70,25 @@ void Juego::Desconectarse(Jugador j) {
 
 void Juego::Moverse(Jugador j, Coordenada c) {
     Coordenada posAnterior = _jugadores[j]->posicion;
-    _grillaPos[posAnterior.latitud][posAnterior.longitud].jugsEnPos.Borrar(j);
-    RemoverDeCola(j);
     if(!_mapa.HayCamino(posAnterior, c) || posAnterior.DistEuclidea(c) > 100){
         _jugadores[j]->sanciones++;
-    }
-    if (_jugadores[j]->sanciones == 5){
-        DiccString<aed2::Nat>::const_Iterador pokesABorrar = _jugadores[j]->pokemonsCapturados.CrearIt();
-        while (pokesABorrar.HaySiguiente()){
-            TuplaOrd<std::string, aed2::Nat> sig("corregime careta", 0); //TODO esto es pa que compile
-            //TuplaOrd<std::string, aed2::Nat> sig = pokesABorrar.Siguiente(); //TODO el iterador solo saca el significado, no la clave.
-            aed2::Nat nuevaCant = _pokemons.Obtener(sig.first()) - sig.second();
-            if (nuevaCant == 0){
-                _pokemons.Borrar(sig.first());
-            } else {
-                _pokemons.Definir(sig.first(), nuevaCant);
+        if (_jugadores[j]->sanciones == 5) {
+            DiccString<aed2::Nat>::const_Iterador pokesABorrar = _jugadores[j]->pokemonsCapturados.CrearIt();
+            while (pokesABorrar.HaySiguiente()) {
+                DiccString<aed2::Nat>::Entrada sig(pokesABorrar.Siguiente());
+                aed2::Nat nuevaCant = _pokemons.Obtener(sig.clave) - sig.valor;
+                if (nuevaCant == 0) {
+                    _pokemons.Borrar(sig.clave);
+                } else {
+                    _pokemons.Definir(sig.clave, nuevaCant);
+                }
+                _cantPokemons = _cantPokemons - sig.valor;
+                pokesABorrar.Avanzar();
             }
-            _cantPokemons = _cantPokemons - sig.second();
-            pokesABorrar.Avanzar();
         }
     } else {
+        _grillaPos[posAnterior.latitud][posAnterior.longitud].jugsEnPos.Borrar(j);
+        RemoverDeCola(j);
         _jugadores[j]->posicion = c;
         AgregarACola(j);
         _grillaPos[c.latitud][c.longitud].jugsEnPos.Agregar(j);
@@ -132,6 +132,10 @@ aed2::Nat Juego::Sanciones(Jugador j) const {
 
 Coordenada Juego::Posicion(Jugador j) const {
     return _jugadores[j]->posicion;
+}
+
+DiccString<aed2::Nat>::const_Iterador Juego::Pokemons(Jugador j) const {
+    return _jugadores[j]->pokemonsCapturados.CrearIt();
 }
 
 const aed2::Conj<Coordenada> &Juego::PosConPokemons() const {
@@ -268,11 +272,11 @@ bool Juego::HayPokemonEnPos(Coordenada c) const {
 
 // ITERADOR DE JUGADORES
 
-Juego::itJugadores Juego::jugadores() const {
+Juego::itJugadores Juego::Jugadores() const {
     return Juego::itJugadores(&_jugadores, false);
 }
 
-Juego::itJugadores Juego::expulsados() const {
+Juego::itJugadores Juego::Expulsados() const {
     return Juego::itJugadores(&_jugadores, true);
 }
 

@@ -62,6 +62,15 @@ private:
     struct Nodo {
         Nodo(const T& v) : valor(v), altura(1), izq(NULL), der(NULL) {};
 
+        Nodo(const Nodo& otro) : valor(otro.valor), altura(otro.altura), izq(NULL), der(NULL) {
+            if(otro.izq != NULL) {
+                izq = new Nodo(*otro.izq);
+            }
+            if(otro.der != NULL) {
+                der = new Nodo(*otro.der);
+            }
+        }
+
         ~Nodo() {
             if(this->izq != NULL) delete this->izq;
             if(this->der != NULL) delete this->der;

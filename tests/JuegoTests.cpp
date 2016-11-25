@@ -21,6 +21,16 @@ protected:
         }
     }
 
+    void expulsar(Juego& j, const Jugador e) {
+        while(j.Sanciones(e) < 5) {
+            if(j.Posicion(e) == c1) {
+                j.Moverse(e, c3);
+            } else {
+                j.Moverse(e, c1);
+            }
+        }
+    }
+
     Mapa m;
     Coordenada c1;
     Coordenada c2;
@@ -50,7 +60,7 @@ TEST_F(JuegoTest, agregarJugadores) {
     ASSERT_FALSE(j.EstaConectado(aed2::Nat(2)));
 }
 
-/*TEST_F(JuegoTest, agregarPokemones){
+TEST_F(JuegoTest, agregarPokemones){
     Juego j(m);
     ASSERT_TRUE(j.PosConPokemons().EsVacio());
     j.AgregarPokemon("pikachu", c1);
@@ -65,7 +75,7 @@ TEST_F(JuegoTest, agregarJugadores) {
     ASSERT_EQ(j.PosConPokemons().Cardinal(), aed2::Nat(2));
     ASSERT_TRUE(j.PosConPokemons().Pertenece(c1));
     ASSERT_TRUE(j.PosConPokemons().Pertenece(c3));
-}*/
+}
 
 TEST_F(JuegoTest, conectarIgualdad) {
     Juego j(m);
@@ -97,6 +107,7 @@ TEST_F(JuegoTest, conectarIgualdad) {
     ASSERT_FALSE(j.EstaConectado(aed2::Nat(1)));
 
 }
+
 // --------- TESTS DEL ITERADOR ---------
 
 TEST_F(JuegoTest, jugadores) {
@@ -105,7 +116,7 @@ TEST_F(JuegoTest, jugadores) {
     j.AgregarJugador();
     j.AgregarJugador();
 
-    itJug = j.jugadores();
+    itJug = j.Jugadores();
     ASSERT_TRUE(itJug.HayMas());
     for(aed2::Nat i = 0; i < 3; ++i) {
         ASSERT_EQ(itJug.Actual(), i);
@@ -116,6 +127,46 @@ TEST_F(JuegoTest, jugadores) {
 
 TEST_F(JuegoTest, jugadoresVacio) {
     Juego j(m);
-    itJug = j.jugadores();
+    itJug = j.Jugadores();
+    ASSERT_FALSE(itJug.HayMas());
+}
+
+TEST_F(JuegoTest, expulsados) {
+    Juego j(m);
+    Jugador e1 = j.AgregarJugador();
+    Jugador e2 = j.AgregarJugador();
+    Jugador e3 = j.AgregarJugador();
+
+    j.Conectarse(e2, c1);
+    expulsar(j, e2);
+
+    Juego::itJugadores it = j.Expulsados();
+    ASSERT_TRUE(it.HayMas());
+    ASSERT_EQ(it.Actual(), e2);
+    it.Avanzar();
+    ASSERT_FALSE(it.HayMas());
+
+    itJug = j.Jugadores();
+    ASSERT_TRUE(itJug.HayMas());
+    ASSERT_EQ(itJug.Actual(), e1);
+    itJug.Avanzar();
+    ASSERT_TRUE(itJug.HayMas());
+    ASSERT_EQ(itJug.Actual(), e3);
+    itJug.Avanzar();
+    ASSERT_FALSE(itJug.HayMas());
+
+    expulsar(j, e3);it = j.Expulsados();
+    ASSERT_TRUE(it.HayMas());
+    ASSERT_EQ(it.Actual(), e2);
+    it.Avanzar();
+    ASSERT_TRUE(it.HayMas());
+    ASSERT_EQ(it.Actual(), e3);
+    it.Avanzar();
+    ASSERT_FALSE(it.HayMas());
+
+    itJug = j.Jugadores();
+    ASSERT_TRUE(itJug.HayMas());
+    ASSERT_EQ(itJug.Actual(), e1);
+    itJug.Avanzar();
     ASSERT_FALSE(itJug.HayMas());
 }

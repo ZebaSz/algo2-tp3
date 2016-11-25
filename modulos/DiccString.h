@@ -26,6 +26,8 @@ public:
     struct Entrada {
         Entrada(const aed2::String& key, T value) : clave(key), valor(value) {}
 
+        Entrada(const Entrada& otra) : clave(otra.clave), valor(otra.valor) {}
+
         friend bool operator==(const Entrada& en1, const Entrada& en2) {
             return en1.clave == en2.clave && en1.valor == en2.valor;
         }

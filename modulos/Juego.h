@@ -8,6 +8,7 @@
 #include "TuplaOrd.h"
 
 class Juego {
+friend class Driver;
 friend class itJugadores;
 struct infoJugador;
 public:
@@ -29,7 +30,7 @@ public:
 
     const Mapa& ObtenerMapa() const;
 
-    itJugadores jugadores() const;
+    itJugadores Jugadores() const;
 
     bool EstaConectado(Jugador j) const;
 
@@ -37,9 +38,9 @@ public:
 
     Coordenada Posicion(Jugador j) const;
 
-    //TODO: POKEMONS
+    DiccString<aed2::Nat>::const_Iterador Pokemons(Jugador j) const;
 
-    itJugadores expulsados() const;
+    itJugadores Expulsados() const;
 
     const aed2::Conj<Coordenada>& PosConPokemons() const;
 
