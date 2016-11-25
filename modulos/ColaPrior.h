@@ -23,6 +23,8 @@ public:
 
 	void Borrar(const T& elem);
 
+    void Vaciar();
+
     typedef typename ConjuntoOrd<T>::const_Iterador const_Iterador;
 
     const_Iterador CrearIt() const;
@@ -96,6 +98,14 @@ void ColaPrior<T>::Borrar(const T &elem){
 }
 
 template <typename T>
+void ColaPrior<T>::Vaciar() {
+    delete _menor;
+    _menor = NULL;
+    _conjElem.Vaciar();
+}
+
+
+template <typename T>
 typename ColaPrior<T>::const_Iterador ColaPrior<T>::CrearIt() const {
 	return _conjElem.CrearIt();
 }
@@ -114,6 +124,5 @@ template<typename T>
 std::ostream &operator<<(std::ostream& os, const ColaPrior<T>& c) {
     return os << c._conjElem;
 }
-
 
 #endif

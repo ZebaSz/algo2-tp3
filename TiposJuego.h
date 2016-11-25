@@ -31,7 +31,7 @@ struct Coordenada
     }
 
     friend std::ostream& operator<< (std::ostream& os, const Coordenada& c) {
-        os << '(' << c.latitud << c.longitud << ')';
+        os << '(' << c.latitud << ',' << c.longitud << ')';
         return os;
     }
 

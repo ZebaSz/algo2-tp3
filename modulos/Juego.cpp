@@ -30,7 +30,7 @@ void Juego::AgregarPokemon(Pokemon pk, Coordenada c) {
     _grillaPos[c.latitud][c.longitud].hayPokemon = true;
     _grillaPos[c.latitud][c.longitud].pokemon = pk;
     _grillaPos[c.latitud][c.longitud].contadorCaptura = 0;
-    _grillaPos[c.latitud][c.longitud].jugsEsperandoCaptura = ColaPrior< TuplaOrd<Jugador, aed2::Nat> >();
+    _grillaPos[c.latitud][c.longitud].jugsEsperandoCaptura.Vaciar();
     aed2::Conj<Coordenada> coorEnRango = PosicionesEnRango(c, 2);
     aed2::Conj<Coordenada>::Iterador itCoor = coorEnRango.CrearIt();
     while (itCoor.HaySiguiente()){
