@@ -111,30 +111,60 @@ TEST_F(JuegoTest, conectarIgualdad) {
 
 TEST_F(JuegoTest, pitanaSancionar) {
     Juego j(m);
-    ASSERT_EQ(j.AgregarJugador(), aed2::Nat(0));
-    j.Conectarse(aed2::Nat(0), c3);
-    ASSERT_TRUE(j.EstaConectado(aed2::Nat(0)));
-    ASSERT_EQ(j.Posicion(aed2::Nat(0)), c3);
-    ASSERT_EQ(j.Sanciones(aed2::Nat(0)), aed2::Nat(0));
-    j.Moverse(aed2::Nat(0), c1);
-    ASSERT_TRUE(j.EstaConectado(aed2::Nat(0)));
-    ASSERT_EQ(j.Posicion(aed2::Nat(0)), c1);
-    ASSERT_EQ(j.Sanciones(aed2::Nat(0)), aed2::Nat(1));
-    j.Moverse(aed2::Nat(0), c3);
-    ASSERT_TRUE(j.EstaConectado(aed2::Nat(0)));
-    ASSERT_EQ(j.Posicion(aed2::Nat(0)), c3);
-    ASSERT_EQ(j.Sanciones(aed2::Nat(0)), aed2::Nat(2));
-    j.Moverse(aed2::Nat(0), c1);
-    ASSERT_TRUE(j.EstaConectado(aed2::Nat(0)));
-    ASSERT_EQ(j.Posicion(aed2::Nat(0)), c1);
-    ASSERT_EQ(j.Sanciones(aed2::Nat(0)), aed2::Nat(3));
-    j.Moverse(aed2::Nat(0), c3);
-    ASSERT_TRUE(j.EstaConectado(aed2::Nat(0)));
-    ASSERT_EQ(j.Posicion(aed2::Nat(0)), c3);
-    ASSERT_EQ(j.Sanciones(aed2::Nat(0)), aed2::Nat(4));
-    j.Moverse(aed2::Nat(0), c1);
-    ASSERT_FALSE(j.EstaConectado(aed2::Nat(0)));
-    ASSERT_EQ(j.Sanciones(aed2::Nat(0)), aed2::Nat(5));
+    Jugador jug1 = j.AgregarJugador();
+    Jugador jug2 = j.AgregarJugador();
+
+    j.Conectarse(jug1, c3);
+    ASSERT_TRUE(j.EstaConectado(jug1));
+    ASSERT_EQ(j.Posicion(jug1), c3);
+    ASSERT_EQ(j.Sanciones(jug1), aed2::Nat(0));
+    j.Conectarse(jug2, c3);
+    ASSERT_TRUE(j.EstaConectado(jug2));
+    ASSERT_EQ(j.Posicion(jug2), c3);
+    ASSERT_EQ(j.Sanciones(jug2), aed2::Nat(0));
+
+    j.Moverse(jug1, c1);
+    ASSERT_TRUE(j.EstaConectado(jug1));
+    ASSERT_EQ(j.Posicion(jug1), c1);
+    ASSERT_EQ(j.Sanciones(jug1), aed2::Nat(1));
+    j.Moverse(jug2, c1);
+    ASSERT_TRUE(j.EstaConectado(jug2));
+    ASSERT_EQ(j.Posicion(jug2), c1);
+    ASSERT_EQ(j.Sanciones(jug2), aed2::Nat(1));
+
+    j.Moverse(jug1, c3);
+    ASSERT_TRUE(j.EstaConectado(jug1));
+    ASSERT_EQ(j.Posicion(jug1), c3);
+    ASSERT_EQ(j.Sanciones(jug1), aed2::Nat(2));
+    j.Moverse(jug2, c3);
+    ASSERT_TRUE(j.EstaConectado(jug2));
+    ASSERT_EQ(j.Posicion(jug2), c3);
+    ASSERT_EQ(j.Sanciones(jug2), aed2::Nat(2));
+
+    j.Moverse(jug1, c1);
+    ASSERT_TRUE(j.EstaConectado(jug1));
+    ASSERT_EQ(j.Posicion(jug1), c1);
+    ASSERT_EQ(j.Sanciones(jug1), aed2::Nat(3));
+    j.Moverse(jug2, c1);
+    ASSERT_TRUE(j.EstaConectado(jug2));
+    ASSERT_EQ(j.Posicion(jug2), c1);
+    ASSERT_EQ(j.Sanciones(jug2), aed2::Nat(3));
+
+    j.Moverse(jug1, c3);
+    ASSERT_TRUE(j.EstaConectado(jug1));
+    ASSERT_EQ(j.Posicion(jug1), c3);
+    ASSERT_EQ(j.Sanciones(jug1), aed2::Nat(4));
+    j.Moverse(jug2, c3);
+    ASSERT_TRUE(j.EstaConectado(jug2));
+    ASSERT_EQ(j.Posicion(jug2), c3);
+    ASSERT_EQ(j.Sanciones(jug2), aed2::Nat(4));
+
+    j.Moverse(jug1, c1);
+    ASSERT_FALSE(j.EstaConectado(jug1));
+    ASSERT_EQ(j.Sanciones(jug1), aed2::Nat(5));
+    ASSERT_TRUE(j.EstaConectado(jug2));
+    ASSERT_EQ(j.Posicion(jug2), c3);
+    ASSERT_EQ(j.Sanciones(jug2), aed2::Nat(4));
 }
 // --------- TESTS DEL ITERADOR ---------
 
