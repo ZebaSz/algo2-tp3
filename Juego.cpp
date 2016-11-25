@@ -148,7 +148,7 @@ const Pokemon &Juego::PokemonEnPos(Coordenada c) const {
 }
 
 bool Juego::PuedoAgregarPokemon(Coordenada c) const {
-    return (_mapa.PosExistente(c) && HayPokemonEnDistancia(c,5));
+    return _mapa.PosExistente(c) && !HayPokemonEnDistancia(c,5);
 }
 
 bool Juego::HayPokemonCercano(Coordenada c) const {
@@ -243,24 +243,24 @@ aed2::Conj<Coordenada> Juego::PosicionesEnRango(Coordenada c, aed2::Nat n) const
         for (aed2::Nat j = 0; j < n; j++){
             Coordenada ne(c.latitud + i, c.longitud + j);
             if (ne.DistEuclidea(c) <= n*n && _mapa.PosExistente(ne)){
-                conjRes.AgregarRapido(ne);
+                conjRes.Agregar(ne);
             }
-            if (c.longitud > j){
+            if (c.longitud >= j){
                 Coordenada no(c.latitud + i, c.longitud - j);
                 if (no.DistEuclidea(c) <= n*n && _mapa.PosExistente(no)){
-                    conjRes.AgregarRapido(no);
+                    conjRes.Agregar(no);
                 }
             }
-            if (c.latitud > i){
+            if (c.latitud >= i){
                 Coordenada se(c.latitud - i, c.longitud + j);
                 if (se.DistEuclidea(c) <= n*n && _mapa.PosExistente(se)){
-                    conjRes.AgregarRapido(se);
+                    conjRes.Agregar(se);
                 }
             }
-            if (c.longitud > j && c.latitud > i){
+            if (c.longitud >= j && c.latitud >= i){
                 Coordenada so(c.latitud - i, c.longitud - j);
                 if (so.DistEuclidea(c) <= n*n && _mapa.PosExistente(so)){
-                    conjRes.AgregarRapido(so);
+                    conjRes.Agregar(so);
                 }
             }
         }

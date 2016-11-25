@@ -177,6 +177,19 @@ TEST_F(JuegoTest, pitanaSancionar) {
     ASSERT_EQ(j.Sanciones(jug2), aed2::Nat(2));
 }
 
+TEST_F(JuegoTest, puedoAgregarPokemon) {
+    Juego j(m);
+    ASSERT_FALSE(j.PuedoAgregarPokemon(Coordenada(11, 11)));
+    ASSERT_FALSE(j.PuedoAgregarPokemon(Coordenada(0, 10)));
+    ASSERT_TRUE(j.PuedoAgregarPokemon(c1));
+    ASSERT_TRUE(j.PuedoAgregarPokemon(c2));
+    ASSERT_TRUE(j.PuedoAgregarPokemon(c3));
+    j.AgregarPokemon("Pikachu", c1);
+    ASSERT_FALSE(j.PuedoAgregarPokemon(c1));
+    ASSERT_FALSE(j.PuedoAgregarPokemon(c2));
+    ASSERT_TRUE(j.PuedoAgregarPokemon(c3));
+}
+
 TEST_F(JuegoTest, colaEspera) {
     Juego j(m);
     Jugador e1 = j.AgregarJugador();
