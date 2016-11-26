@@ -389,6 +389,31 @@ TEST_F(JuegoTest, test_cantidad_de_movimientos_para_captura) {
 
     j.conectarse(e2, c1);
 
+    for(int i = 0; i < 5; ++i) {
+        ASSERT_EQ(aed2::Nat(i), j.cantMovimientosParaCaptura(c1));
+        if(j.posicion(e1) == c2) {
+            j.moverse(e1, c4);
+        } else {
+            j.moverse(e1, c2);
+        }
+    }
+    ASSERT_EQ(aed2::Nat(5), j.cantMovimientosParaCaptura(c1));
+    j.moverse(e1, Coordenada(0,1));
+
+    for(int i = 0; i < 5; ++i) {
+        ASSERT_EQ(aed2::Nat(i), j.cantMovimientosParaCaptura(c1));
+        if(j.posicion(e1) == c2) {
+            j.moverse(e1, c4);
+        } else {
+            j.moverse(e1, c2);
+        }
+    }
+
+    ASSERT_EQ(aed2::Nat(5), j.cantMovimientosParaCaptura(c1));
+    j.desconectarse(e1);
+    ASSERT_EQ(aed2::Nat(5), j.cantMovimientosParaCaptura(c1));
+    j.conectarse(e1, c1);
+
     for(int i = 0; i < 10; ++i) {
         ASSERT_EQ(aed2::Nat(i), j.cantMovimientosParaCaptura(c1));
         if(j.posicion(e1) == c2) {
@@ -397,6 +422,9 @@ TEST_F(JuegoTest, test_cantidad_de_movimientos_para_captura) {
             j.moverse(e1, c2);
         }
     }
+
+    j.agregarPokemon("Pikachu", c1);
+    ASSERT_EQ(aed2::Nat(0), j.cantMovimientosParaCaptura(c1));
 
 
 }
