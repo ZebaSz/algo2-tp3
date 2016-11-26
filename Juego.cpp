@@ -94,34 +94,34 @@ void Juego::Moverse(Jugador j, Coordenada c) {
         _jugadores[j]->posicion = c;
         AgregarACola(j);
         _grillaPos[c.latitud][c.longitud].jugsEnPos.Agregar(j);
-    }
-    aed2::Conj<Coordenada>::Iterador itPos = _posConPokemons.CrearIt();
-    while(itPos.HaySiguiente()){
-        Coordenada coorConPk = itPos.Siguiente();
-        if (c.DistEuclidea(coorConPk) > 4){
-            _grillaPos[coorConPk.latitud][coorConPk.longitud].contadorCaptura++;
-            infoPos& posPk = _grillaPos[coorConPk.latitud][coorConPk.longitud];
-            //if (posPk.contadorCaptura == 10){
-            if (posPk.contadorCaptura == 10 && !posPk.jugsEsperandoCaptura.Vacia()){
-                Pokemon pk = posPk.pokemon;
-                Jugador captor = posPk.jugsEsperandoCaptura.Proximo().first();
-                _jugadores[captor]->cantPokemons++;
-                if (_jugadores[captor]->pokemonsCapturados.Definido(pk)){
-                    aed2::Nat nuevaCant =_jugadores[captor]->pokemonsCapturados.Obtener(pk) + 1;
-                    _jugadores[captor]->pokemonsCapturados.Definir(pk, nuevaCant);
+        aed2::Conj<Coordenada>::Iterador itPos = _posConPokemons.CrearIt();
+        while (itPos.HaySiguiente()) {
+            Coordenada coorConPk = itPos.Siguiente();
+            if (c.DistEuclidea(coorConPk) > 4) {
+                _grillaPos[coorConPk.latitud][coorConPk.longitud].contadorCaptura++;
+                infoPos &posPk = _grillaPos[coorConPk.latitud][coorConPk.longitud];
+                //if (posPk.contadorCaptura == 10){
+                if (posPk.contadorCaptura == 10 && !posPk.jugsEsperandoCaptura.Vacia()) {
+                    Pokemon pk = posPk.pokemon;
+                    Jugador captor = posPk.jugsEsperandoCaptura.Proximo().first();
+                    _jugadores[captor]->cantPokemons++;
+                    if (_jugadores[captor]->pokemonsCapturados.Definido(pk)) {
+                        aed2::Nat nuevaCant = _jugadores[captor]->pokemonsCapturados.Obtener(pk) + 1;
+                        _jugadores[captor]->pokemonsCapturados.Definir(pk, nuevaCant);
+                    } else {
+                        _jugadores[captor]->pokemonsCapturados.Definir(pk, 1);
+                    }
+                    posPk.hayPokemon = false;
+                    itPos.EliminarSiguiente();
                 } else {
-                    _jugadores[captor]->pokemonsCapturados.Definir(pk, 1);
+                    itPos.Avanzar();
                 }
-                posPk.hayPokemon = false;
-                itPos.EliminarSiguiente();
-            } else{
+            } else {
+                if (posAnterior.DistEuclidea(coorConPk) > 4) {
+                    _grillaPos[coorConPk.latitud][coorConPk.longitud].contadorCaptura = 0;
+                }
                 itPos.Avanzar();
             }
-        } else{
-            if (posAnterior.DistEuclidea(coorConPk) > 4){
-                _grillaPos[coorConPk.latitud][coorConPk.longitud].contadorCaptura = 0;
-            }
-            itPos.Avanzar();
         }
     }
 }
