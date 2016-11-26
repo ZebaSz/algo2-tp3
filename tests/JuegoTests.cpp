@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 #include "../aed2/Conj.h"
 #include "../Juego.h"
+#include "../Driver.h"
 
 // --------- FIXTURES ---------
 
@@ -242,7 +243,7 @@ TEST_F(JuegoTest, colaEspera2) {
 
     ASSERT_TRUE(j.HayPokemonCercano(c1));
     ASSERT_TRUE(j.HayPokemonCercano(Coordenada(0,1)));
-    ASSERT_FALSE(j.HayPokemonCercano(Coordenada(0,2)));
+    ASSERT_TRUE(j.HayPokemonCercano(Coordenada(0,2)));
     ASSERT_FALSE(j.HayPokemonCercano(c2));
     ASSERT_FALSE(j.HayPokemonCercano(c3));
     ASSERT_FALSE(j.HayPokemonCercano(c4));
@@ -282,7 +283,7 @@ TEST_F(JuegoTest, colaEspera2) {
         ASSERT_TRUE(j.EntrenadoresPosibles(jugadores, c1).Pertenece(e2));
         ASSERT_TRUE(j.HayPokemonCercano(c1));
         ASSERT_TRUE(j.HayPokemonCercano(Coordenada(0,1)));
-        ASSERT_FALSE(j.HayPokemonCercano(Coordenada(0,2)));
+        ASSERT_TRUE(j.HayPokemonCercano(Coordenada(0,2)));
         ASSERT_FALSE(j.HayPokemonCercano(c2));
         ASSERT_FALSE(j.HayPokemonCercano(c3));
         ASSERT_FALSE(j.HayPokemonCercano(c4));
@@ -313,7 +314,7 @@ TEST_F(JuegoTest, colaEspera2) {
         ASSERT_TRUE(j.EntrenadoresPosibles(jugadores, c1).Pertenece(e3));
         ASSERT_TRUE(j.HayPokemonCercano(c1));
         ASSERT_TRUE(j.HayPokemonCercano(Coordenada(0,1)));
-        ASSERT_FALSE(j.HayPokemonCercano(Coordenada(0,2)));
+        ASSERT_TRUE(j.HayPokemonCercano(Coordenada(0,2)));
         ASSERT_FALSE(j.HayPokemonCercano(c2));
         ASSERT_FALSE(j.HayPokemonCercano(c3));
         ASSERT_FALSE(j.HayPokemonCercano(c4));
@@ -325,7 +326,7 @@ TEST_F(JuegoTest, colaEspera2) {
         ASSERT_TRUE(j.EntrenadoresPosibles(jugadores, c1).Pertenece(e3));
         ASSERT_TRUE(j.HayPokemonCercano(c1));
         ASSERT_TRUE(j.HayPokemonCercano(Coordenada(0,1)));
-        ASSERT_FALSE(j.HayPokemonCercano(Coordenada(0,2)));
+        ASSERT_TRUE(j.HayPokemonCercano(Coordenada(0,2)));
         ASSERT_FALSE(j.HayPokemonCercano(c2));
         ASSERT_FALSE(j.HayPokemonCercano(c3));
         ASSERT_FALSE(j.HayPokemonCercano(c4));
@@ -352,6 +353,18 @@ TEST_F(JuegoTest, colaEspera2) {
     ASSERT_TRUE(itP2.HaySiguiente());
     ASSERT_FALSE(itP1.HaySiguiente());
     ASSERT_FALSE(itP3.HaySiguiente());
+
+}
+
+
+
+TEST_F(JuegoTest, hay_pokemon_cercano) {
+    Driver j = Driver(m.Coordenadas());
+    j.agregarPokemon("pikachu", c1);
+    ASSERT_TRUE(j.hayPokemonCercano(c1));
+    ASSERT_TRUE(j.hayPokemonCercano(Coordenada(0,1)));
+    ASSERT_TRUE(j.hayPokemonCercano(Coordenada(0,2)));
+
 }
 // --------- TESTS DEL ITERADOR ---------
 

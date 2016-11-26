@@ -34,6 +34,7 @@ void Juego::AgregarPokemon(Pokemon pk, Coordenada c) {
     aed2::Conj<Coordenada> coorEnRango = PosicionesEnRango(c, 2);
     aed2::Conj<Coordenada>::Iterador itCoor = coorEnRango.CrearIt();
     while (itCoor.HaySiguiente()){
+
         Coordenada d = itCoor.Siguiente();
         ConjuntoOrd<Jugador>::const_Iterador it = _grillaPos[d.latitud][d.longitud].jugsEnPos.CrearIt();
         while (it.HayMas()) {
@@ -202,7 +203,8 @@ void Juego::AgregarACola(Jugador j) {
     aed2::Conj<Coordenada>::const_Iterador itCoor = coorEnRango.CrearIt();
     while(itCoor.HaySiguiente()) {
         Coordenada siguiente = itCoor.Siguiente();
-        if(HayPokemonEnPos(siguiente)) {
+        //if(HayPokemonEnPos(siguiente)) {
+        if(HayPokemonEnPos(siguiente) && _mapa.HayCamino(c, siguiente)) {
             _grillaPos[siguiente.latitud][siguiente.longitud].jugsEsperandoCaptura
                     .Encolar(TuplaOrd<Jugador, aed2::Nat>(j, _jugadores[j]->cantPokemons));
         }
@@ -216,7 +218,8 @@ void Juego::RemoverDeCola(Jugador j) {
     aed2::Conj<Coordenada>::const_Iterador itCoor = coorEnRango.CrearIt();
     while (itCoor.HaySiguiente()){
         Coordenada siguiente = itCoor.Siguiente();
-        if (HayPokemonEnPos(siguiente)){
+        //if (HayPokemonEnPos(siguiente)){
+        if(HayPokemonEnPos(siguiente) && _mapa.HayCamino(c, siguiente)) {
             TuplaOrd<Jugador, aed2::Nat> tuplaJug(j, _jugadores[j]->cantPokemons);
             _grillaPos[siguiente.latitud][siguiente.longitud].jugsEsperandoCaptura.Borrar(tuplaJug);
         }
@@ -240,8 +243,8 @@ void Juego::ResetearContadores(Jugador j) {
 
 aed2::Conj<Coordenada> Juego::PosicionesEnRango(Coordenada c, aed2::Nat n) const {
     aed2::Conj<Coordenada> conjRes;
-    for(aed2::Nat i = 0; i < n; i++){
-        for (aed2::Nat j = 0; j < n; j++){
+    for(aed2::Nat i = 0; i <= n; i++){
+        for (aed2::Nat j = 0; j <= n; j++){
             Coordenada ne(c.latitud + i, c.longitud + j);
             if (ne.DistEuclidea(c) <= n*n && _mapa.PosExistente(ne)){
                 conjRes.Agregar(ne);
