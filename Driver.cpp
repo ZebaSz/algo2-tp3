@@ -92,12 +92,7 @@ Pokemon Driver::pokemonEnPos(const Coordenada &c) const {
 }
 
 Nat Driver::cantMovimientosParaCaptura(const Coordenada &c) const {
-    const Juego::infoPos &i = _juego._grillaPos[c.latitud][c.longitud];
-    if (i.hayPokemon && !i.jugsEsperandoCaptura.Vacia()) {
-        return i.contadorCaptura;
-    } else {
-        return aed2::Nat(0);
-    }
+    return _juego._grillaPos[c.latitud][c.longitud].contadorCaptura;
 }
 
 bool Driver::puedoAgregarPokemon(const Coordenada &c) const {

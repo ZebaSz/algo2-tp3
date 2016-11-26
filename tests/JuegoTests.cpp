@@ -376,14 +376,15 @@ TEST_F(JuegoTest, test_cantidad_de_movimientos_para_captura) {
 
     j.conectarse(e1, c2);
 
-    for(int i = 0; i < 10; ++i) {
+    for(int i = 0; i < 15; ++i) {
+        ASSERT_EQ(aed2::Nat(i), j.cantMovimientosParaCaptura(c1));
         if(j.posicion(e1) == c2) {
             j.moverse(e1, c4);
         } else {
             j.moverse(e1, c2);
         }
-        ASSERT_EQ(aed2::Nat(0), j.cantMovimientosParaCaptura(c1));
     }
+    ASSERT_EQ(aed2::Nat(15), j.cantMovimientosParaCaptura(c1));
 
     Jugador e2 = j.agregarJugador();
 
@@ -397,7 +398,16 @@ TEST_F(JuegoTest, test_cantidad_de_movimientos_para_captura) {
             j.moverse(e1, c2);
         }
     }
-    ASSERT_EQ(aed2::Nat(5), j.cantMovimientosParaCaptura(c1));
+
+    for(int i = 0; i < 5; ++i) {
+        ASSERT_EQ(aed2::Nat(5), j.cantMovimientosParaCaptura(c1));
+        if(j.posicion(e2) == c1) {
+            j.moverse(e2, Coordenada(0,2));
+        } else {
+            j.moverse(e2, c1);
+        }
+    }
+
     j.moverse(e1, Coordenada(0,1));
 
     for(int i = 0; i < 5; ++i) {
@@ -412,7 +422,20 @@ TEST_F(JuegoTest, test_cantidad_de_movimientos_para_captura) {
     ASSERT_EQ(aed2::Nat(5), j.cantMovimientosParaCaptura(c1));
     j.desconectarse(e1);
     ASSERT_EQ(aed2::Nat(5), j.cantMovimientosParaCaptura(c1));
-    j.conectarse(e1, c1);
+    j.desconectarse(e2);
+    ASSERT_EQ(aed2::Nat(5), j.cantMovimientosParaCaptura(c1));
+    j.conectarse(e1, Coordenada(0,2));
+
+    for(int i = 0; i < 10; ++i) {
+        ASSERT_EQ(aed2::Nat(i), j.cantMovimientosParaCaptura(c1));
+        if(j.posicion(e1) == c2) {
+            j.moverse(e1, c4);
+        } else {
+            j.moverse(e1, c2);
+        }
+    }
+
+    j.conectarse(e2, Coordenada(0,2));
 
     for(int i = 0; i < 10; ++i) {
         ASSERT_EQ(aed2::Nat(i), j.cantMovimientosParaCaptura(c1));
