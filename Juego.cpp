@@ -173,7 +173,21 @@ Coordenada Juego::PosPokemonCercano(Coordenada c) const {
 
 aed2::Conj<Jugador> Juego::EntrenadoresPosibles(aed2::Conj<Jugador> es, Coordenada c) const {
     aed2::Conj<Jugador> conjJug;
-    ColaPrior<TuplaOrd<Jugador, aed2::Nat > >::const_Iterador itEntrenadores = _grillaPos[c.latitud][c.longitud].jugsEsperandoCaptura.CrearIt();
+    //OLD: ColaPrior<TuplaOrd<Jugador, aed2::Nat > >::const_Iterador itEntrenadores = _grillaPos[c.latitud][c.longitud].jugsEsperandoCaptura.CrearIt();
+
+    //NEW:
+    ColaPrior<TuplaOrd<Jugador, aed2::Nat > >::const_Iterador itEntrenadores;
+    aed2::Conj<Coordenada> coorEnRango = PosicionesEnRango(c, 2);
+    aed2::Conj<Coordenada>::Iterador itCoor = coorEnRango.CrearIt();
+    while (itCoor.HaySiguiente()) {
+        Coordenada siguiente = itCoor.Siguiente();
+        if (HayPokemonEnPos(siguiente)) {
+            itEntrenadores = _grillaPos[siguiente.latitud][siguiente.longitud].jugsEsperandoCaptura.CrearIt();
+        }
+        itCoor.Avanzar();
+    }
+
+
     while(itEntrenadores.HayMas()){
         Jugador actual = itEntrenadores.Actual().first();
         if (es.Pertenece(actual)){

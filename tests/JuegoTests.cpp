@@ -366,6 +366,51 @@ TEST_F(JuegoTest, hay_pokemon_cercano) {
     ASSERT_TRUE(j.hayPokemonCercano(Coordenada(0,2)));
 
 }
+
+TEST_F(JuegoTest, test_cantidad_de_movimientos_para_captura) {
+    Driver j = Driver(m.Coordenadas());
+
+    Jugador e1 = j.agregarJugador();
+
+    j.agregarPokemon("Pikachu", c1);
+
+    j.conectarse(e1, c2);
+
+    for(int i = 0; i < 10; ++i) {
+        if(j.posicion(e1) == c2) {
+            j.moverse(e1, c4);
+        } else {
+            j.moverse(e1, c2);
+        }
+        ASSERT_EQ(aed2::Nat(0), j.cantMovimientosParaCaptura(c1));
+    }
+
+    Jugador e2 = j.agregarJugador();
+
+    j.conectarse(e2, c1);
+
+    for(int i = 0; i < 10; ++i) {
+        ASSERT_EQ(aed2::Nat(i), j.cantMovimientosParaCaptura(c1));
+        if(j.posicion(e1) == c2) {
+            j.moverse(e1, c4);
+        } else {
+            j.moverse(e1, c2);
+        }
+    }
+
+
+}
+
+TEST_F(JuegoTest, test_entrenadores_posibles) {
+    Driver j = Driver(m.Coordenadas());
+
+    Jugador e1 = j.agregarJugador();
+
+    j.agregarPokemon("Pikachu", c1);
+
+    j.conectarse(e1, c2);
+
+}
 // --------- TESTS DEL ITERADOR ---------
 
 TEST_F(JuegoTest, jugadores) {
