@@ -224,6 +224,135 @@ TEST_F(JuegoTest, colaEspera) {
     ASSERT_TRUE(j.EntrenadoresPosibles(jugadores, c1).EsVacio());
 }
 
+TEST_F(JuegoTest, colaEspera2) {
+    Juego j(m);
+    Jugador e1 = j.AgregarJugador();
+
+    j.AgregarPokemon("Pikachu", c1);
+
+    j.Conectarse(e1, c2);
+
+    for(int i = 0; i < 10; ++i) {
+        if(j.Posicion(e1) == c2) {
+            j.Moverse(e1, c4);
+        } else {
+            j.Moverse(e1, c2);
+        }
+    }
+
+    ASSERT_TRUE(j.HayPokemonCercano(c1));
+    ASSERT_TRUE(j.HayPokemonCercano(Coordenada(0,1)));
+    ASSERT_FALSE(j.HayPokemonCercano(Coordenada(0,2)));
+    ASSERT_FALSE(j.HayPokemonCercano(c2));
+    ASSERT_FALSE(j.HayPokemonCercano(c3));
+    ASSERT_FALSE(j.HayPokemonCercano(c4));
+
+    Jugador e2 = j.AgregarJugador();
+
+    j.Conectarse(e2, c1);
+
+    for(int i = 0; i < 5; ++i) {
+        if(j.Posicion(e1) == c2) {
+            j.Moverse(e1, c4);
+        } else {
+            j.Moverse(e1, c2);
+        }
+    }
+
+    j.Moverse(e1, Coordenada(0,1));
+
+    aed2::Conj<Jugador> jugadores;
+
+    Juego::itJugadores it;
+    for(it = j.Jugadores(); it.HayMas(); it.Avanzar()) {
+        jugadores.AgregarRapido(it.Actual());
+    }
+
+    ASSERT_EQ(aed2::Nat(2), j.EntrenadoresPosibles(jugadores, c1).Cardinal());
+    ASSERT_TRUE(j.EntrenadoresPosibles(jugadores, c1).Pertenece(e1));
+    ASSERT_TRUE(j.EntrenadoresPosibles(jugadores, c1).Pertenece(e2));
+
+    for(int i = 0; i < 7; ++i) {
+        if(j.Posicion(e1) == c2) {
+            j.Moverse(e1, c4);
+        } else {
+            j.Moverse(e1, c2);
+        }
+        ASSERT_FALSE(j.EntrenadoresPosibles(jugadores, c1).Pertenece(e1));
+        ASSERT_TRUE(j.EntrenadoresPosibles(jugadores, c1).Pertenece(e2));
+        ASSERT_TRUE(j.HayPokemonCercano(c1));
+        ASSERT_TRUE(j.HayPokemonCercano(Coordenada(0,1)));
+        ASSERT_FALSE(j.HayPokemonCercano(Coordenada(0,2)));
+        ASSERT_FALSE(j.HayPokemonCercano(c2));
+        ASSERT_FALSE(j.HayPokemonCercano(c3));
+        ASSERT_FALSE(j.HayPokemonCercano(c4));
+    }
+
+    Jugador e3 = j.AgregarJugador();
+    j.Conectarse(e3, c1);
+
+    jugadores = aed2::Conj<Jugador>();
+
+    for(it = j.Jugadores(); it.HayMas(); it.Avanzar()) {
+        jugadores.AgregarRapido(it.Actual());
+    }
+
+    ASSERT_EQ(aed2::Nat(2), j.EntrenadoresPosibles(jugadores, c1).Cardinal());
+    ASSERT_FALSE(j.EntrenadoresPosibles(jugadores, c1).Pertenece(e1));
+    ASSERT_TRUE(j.EntrenadoresPosibles(jugadores, c1).Pertenece(e2));
+    ASSERT_TRUE(j.EntrenadoresPosibles(jugadores, c1).Pertenece(e3));
+
+    for(int i = 0; i < 11; ++i) {
+        if(j.Posicion(e2) == c1) {
+            j.Moverse(e2, Coordenada(0,1));
+        } else {
+            j.Moverse(e2, c1);
+        }
+        ASSERT_FALSE(j.EntrenadoresPosibles(jugadores, c1).Pertenece(e1));
+        ASSERT_TRUE(j.EntrenadoresPosibles(jugadores, c1).Pertenece(e2));
+        ASSERT_TRUE(j.EntrenadoresPosibles(jugadores, c1).Pertenece(e3));
+        ASSERT_TRUE(j.HayPokemonCercano(c1));
+        ASSERT_TRUE(j.HayPokemonCercano(Coordenada(0,1)));
+        ASSERT_FALSE(j.HayPokemonCercano(Coordenada(0,2)));
+        ASSERT_FALSE(j.HayPokemonCercano(c2));
+        ASSERT_FALSE(j.HayPokemonCercano(c3));
+        ASSERT_FALSE(j.HayPokemonCercano(c4));
+    }
+
+    for(int i = 0; i < 10; ++i) {
+        ASSERT_FALSE(j.EntrenadoresPosibles(jugadores, c1).Pertenece(e1));
+        ASSERT_TRUE(j.EntrenadoresPosibles(jugadores, c1).Pertenece(e2));
+        ASSERT_TRUE(j.EntrenadoresPosibles(jugadores, c1).Pertenece(e3));
+        ASSERT_TRUE(j.HayPokemonCercano(c1));
+        ASSERT_TRUE(j.HayPokemonCercano(Coordenada(0,1)));
+        ASSERT_FALSE(j.HayPokemonCercano(Coordenada(0,2)));
+        ASSERT_FALSE(j.HayPokemonCercano(c2));
+        ASSERT_FALSE(j.HayPokemonCercano(c3));
+        ASSERT_FALSE(j.HayPokemonCercano(c4));
+        if(j.Posicion(e1) == c2) {
+            j.Moverse(e1, c4);
+        } else {
+            j.Moverse(e1, c2);
+        }
+    }
+
+    ASSERT_FALSE(j.HayPokemonCercano(c1));
+    ASSERT_FALSE(j.HayPokemonCercano(Coordenada(0,1)));
+    ASSERT_FALSE(j.HayPokemonCercano(Coordenada(0,2)));
+    ASSERT_FALSE(j.HayPokemonCercano(c2));
+    ASSERT_FALSE(j.HayPokemonCercano(c3));
+    ASSERT_FALSE(j.HayPokemonCercano(c4));
+    ASSERT_TRUE(j.PosConPokemons().EsVacio());
+    const DiccString<aed2::Nat>::const_Iterador &itP1 = j.Pokemons(e1);
+    const DiccString<aed2::Nat>::const_Iterador &itP2 = j.Pokemons(e2);
+    const DiccString<aed2::Nat>::const_Iterador &itP3 = j.Pokemons(e3);
+    ASSERT_TRUE(itP2.HaySiguiente());
+    ASSERT_EQ("Pikachu", itP2.Siguiente().clave);
+    ASSERT_EQ(1, itP2.Siguiente().valor);
+    ASSERT_TRUE(itP2.HaySiguiente());
+    ASSERT_FALSE(itP1.HaySiguiente());
+    ASSERT_FALSE(itP3.HaySiguiente());
+}
 // --------- TESTS DEL ITERADOR ---------
 
 TEST_F(JuegoTest, jugadores) {

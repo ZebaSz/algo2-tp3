@@ -99,7 +99,8 @@ void Juego::Moverse(Jugador j, Coordenada c) {
         if (c.DistEuclidea(coorConPk) > 4){
             _grillaPos[coorConPk.latitud][coorConPk.longitud].contadorCaptura++;
             infoPos& posPk = _grillaPos[coorConPk.latitud][coorConPk.longitud];
-            if (posPk.contadorCaptura == 10){
+            //if (posPk.contadorCaptura == 10){
+            if (posPk.contadorCaptura == 10 && !posPk.jugsEsperandoCaptura.Vacia()){
                 Pokemon pk = posPk.pokemon;
                 Jugador captor = posPk.jugsEsperandoCaptura.Proximo().first();
                 _jugadores[captor]->cantPokemons++;
