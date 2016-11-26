@@ -67,6 +67,7 @@ void Juego::Desconectarse(Jugador j) {
     Coordenada c = _jugadores[j]->posicion;
     _jugadores[j]->conectado = false;
     _grillaPos[c.latitud][c.longitud].jugsEnPos.Borrar(j);
+    RemoverDeCola(j);
 }
 
 void Juego::Moverse(Jugador j, Coordenada c) {

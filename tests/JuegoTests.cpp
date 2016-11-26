@@ -349,7 +349,7 @@ TEST_F(JuegoTest, colaEspera2) {
     const DiccString<aed2::Nat>::const_Iterador &itP3 = j.Pokemons(e3);
     ASSERT_TRUE(itP2.HaySiguiente());
     ASSERT_EQ("Pikachu", itP2.Siguiente().clave);
-    ASSERT_EQ(1, itP2.Siguiente().valor);
+    ASSERT_EQ(aed2::Nat(1), itP2.Siguiente().valor);
     ASSERT_TRUE(itP2.HaySiguiente());
     ASSERT_FALSE(itP1.HaySiguiente());
     ASSERT_FALSE(itP3.HaySiguiente());
@@ -456,10 +456,30 @@ TEST_F(JuegoTest, test_entrenadores_posibles) {
     Driver j = Driver(m.Coordenadas());
 
     Jugador e1 = j.agregarJugador();
+    Jugador e2 = j.agregarJugador();
+    Jugador e3 = j.agregarJugador();
 
     j.agregarPokemon("Pikachu", c1);
 
-    j.conectarse(e1, c2);
+    j.conectarse(e1, Coordenada(0,1));
+    j.conectarse(e2, c1);
+    j.conectarse(e3, c4);
+
+    Conj<Jugador> jugs1 = j.entrenadoresPosibles(c1);
+    ASSERT_TRUE(jugs1.Pertenece(e1));
+    ASSERT_TRUE(jugs1.Pertenece(e2));
+    ASSERT_FALSE(jugs1.Pertenece(e3));
+
+    j.moverse(e1, c2);
+
+    Conj<Jugador> jugs2 = j.entrenadoresPosibles(c1);
+    ASSERT_FALSE(jugs2.Pertenece(e1));
+    ASSERT_TRUE(jugs2.Pertenece(e2));
+    ASSERT_FALSE(jugs2.Pertenece(e3));
+
+    j.desconectarse(e2);
+
+    ASSERT_TRUE(j.entrenadoresPosibles(c1).EsVacio());
 
 }
 // --------- TESTS DEL ITERADOR ---------
