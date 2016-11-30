@@ -17,6 +17,7 @@ protected:
         cc.Agregar(c3);
         cc.Agregar(c4);
         cc.Agregar(Coordenada(1,4));
+        cc.Agregar(Coordenada(10,1));
         aed2::Conj<Coordenada>::const_Iterador it;
         for(it = cc.CrearIt(); it.HaySiguiente(); it.Avanzar()) {
             m.AgregarCoor(it.Siguiente());
@@ -356,6 +357,37 @@ TEST_F(JuegoTest, colaEspera2) {
 
 }
 
+TEST_F(JuegoTest, testfallido) {
+    Juego j(m);
+    Jugador e1 = j.AgregarJugador();
+    Jugador e2 = j.AgregarJugador();
+    Jugador e3 = j.AgregarJugador();
+
+    j.AgregarPokemon("Pikachu", c1);
+    j.AgregarPokemon("Pikachu", c3);
+
+    j.Conectarse(e1, c2);
+    j.Conectarse(e2, c1);
+    ASSERT_EQ(j.CantPokemonsTotales(),aed2::Nat(2));
+    ASSERT_EQ(j.CantMismaEspecie("Pikachu"),aed2::Nat(2));
+
+    for(int i = 0; i < 10; ++i) {
+        if(j.Posicion(e1) == c2) {
+            j.Moverse(e1, c4);
+        } else {
+            j.Moverse(e1, c2);
+        }
+    }
+    ASSERT_EQ(j.CantPokemonsTotales(),aed2::Nat(2));
+    ASSERT_EQ(j.CantMismaEspecie("Pikachu"),aed2::Nat(2));
+
+    for(int i = 0; i < 5; ++i) {
+        j.Moverse(e2, c3);
+    }
+    ASSERT_EQ(j.Sanciones(e2), aed2::Nat(5));
+    ASSERT_EQ(j.CantMismaEspecie("Pikachu"),aed2::Nat(1));
+    ASSERT_EQ(j.CantPokemonsTotales(),aed2::Nat(1));
+}
 
 
 TEST_F(JuegoTest, hay_pokemon_cercano) {

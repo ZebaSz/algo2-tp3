@@ -22,8 +22,6 @@ public:
 
     const T& Minimo() const;
 
-    void Vaciar();
-
     class const_Iterador {
     public:
         const_Iterador();
@@ -158,12 +156,6 @@ const T& ConjuntoOrd<T>::Minimo() const {
         pos = pos->izq;
     }
     return pos->valor;
-}
-
-template <typename T>
-void ConjuntoOrd<T>::Vaciar() {
-    delete _raiz;
-    _raiz = NULL;
 }
 
 template <typename T>

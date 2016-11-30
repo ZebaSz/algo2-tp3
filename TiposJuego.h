@@ -14,7 +14,7 @@ struct Coordenada
 	{
 	}
 
-    const aed2::Nat DistEuclidea (Coordenada otra) const {
+    const aed2::Nat DistEuclidea (const Coordenada& otra) const {
         aed2::Nat la = 0;
         aed2::Nat lo = 0;
         if(latitud > otra.latitud){

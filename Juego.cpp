@@ -13,6 +13,10 @@ Juego::~Juego() {
     for(aed2::Nat i = 0; i < _jugadores.Longitud(); ++i) {
         delete _jugadores[i];
     }
+    while(!_basura.EsVacia()) {
+        delete _basura.Primero();
+        _basura.Fin();
+    }
 }
 
 const Mapa &Juego::ObtenerMapa() const {
@@ -30,7 +34,8 @@ void Juego::AgregarPokemon(Pokemon pk, Coordenada c) {
     _grillaPos[c.latitud][c.longitud].hayPokemon = true;
     _grillaPos[c.latitud][c.longitud].pokemon = pk;
     _grillaPos[c.latitud][c.longitud].contadorCaptura = 0;
-    _grillaPos[c.latitud][c.longitud].jugsEsperandoCaptura.Vaciar();
+    _grillaPos[c.latitud][c.longitud].jugsEsperandoCaptura = new ColaPrior<TuplaOrd<Jugador, aed2::Nat> >();
+    _basura.AgregarAdelante(_grillaPos[c.latitud][c.longitud].jugsEsperandoCaptura);
     aed2::Conj<Coordenada> coorEnRango = PosicionesEnRango(c, 2);
     aed2::Conj<Coordenada>::Iterador itCoor = coorEnRango.CrearIt();
     while (itCoor.HaySiguiente()){
@@ -40,7 +45,7 @@ void Juego::AgregarPokemon(Pokemon pk, Coordenada c) {
         while (it.HayMas()) {
             Jugador jug = it.Actual();
             TuplaOrd<Jugador, aed2::Nat> tuplaJug(jug , _jugadores[jug]->cantPokemons);
-            _grillaPos[c.latitud][c.longitud].jugsEsperandoCaptura.Encolar(tuplaJug);
+            _grillaPos[c.latitud][c.longitud].jugsEsperandoCaptura->Encolar(tuplaJug);
             it.Avanzar();
         }
         itCoor.Avanzar();
@@ -100,10 +105,9 @@ void Juego::Moverse(Jugador j, Coordenada c) {
             if (c.DistEuclidea(coorConPk) > 4) {
                 _grillaPos[coorConPk.latitud][coorConPk.longitud].contadorCaptura++;
                 infoPos &posPk = _grillaPos[coorConPk.latitud][coorConPk.longitud];
-                //if (posPk.contadorCaptura == 10){
-                if (posPk.contadorCaptura == 10 && !posPk.jugsEsperandoCaptura.Vacia()) {
+                if (posPk.contadorCaptura == 10 && !posPk.jugsEsperandoCaptura->Vacia()) {
                     Pokemon pk = posPk.pokemon;
-                    Jugador captor = posPk.jugsEsperandoCaptura.Proximo().first();
+                    Jugador captor = posPk.jugsEsperandoCaptura->Proximo().first();
                     _jugadores[captor]->cantPokemons++;
                     if (_jugadores[captor]->pokemonsCapturados.Definido(pk)) {
                         aed2::Nat nuevaCant = _jugadores[captor]->pokemonsCapturados.Obtener(pk) + 1;
@@ -174,16 +178,13 @@ Coordenada Juego::PosPokemonCercano(Coordenada c) const {
 
 aed2::Conj<Jugador> Juego::EntrenadoresPosibles(aed2::Conj<Jugador> es, Coordenada c) const {
     aed2::Conj<Jugador> conjJug;
-    //OLD: ColaPrior<TuplaOrd<Jugador, aed2::Nat > >::const_Iterador itEntrenadores = _grillaPos[c.latitud][c.longitud].jugsEsperandoCaptura.CrearIt();
-
-    //NEW:
     ColaPrior<TuplaOrd<Jugador, aed2::Nat > >::const_Iterador itEntrenadores;
     aed2::Conj<Coordenada> coorEnRango = PosicionesEnRango(c, 2);
     aed2::Conj<Coordenada>::Iterador itCoor = coorEnRango.CrearIt();
     while (itCoor.HaySiguiente()) {
         Coordenada siguiente = itCoor.Siguiente();
         if (HayPokemonEnPos(siguiente)) {
-            itEntrenadores = _grillaPos[siguiente.latitud][siguiente.longitud].jugsEsperandoCaptura.CrearIt();
+            itEntrenadores = _grillaPos[siguiente.latitud][siguiente.longitud].jugsEsperandoCaptura->CrearIt();
         }
         itCoor.Avanzar();
     }
@@ -218,10 +219,11 @@ void Juego::AgregarACola(Jugador j) {
     aed2::Conj<Coordenada>::const_Iterador itCoor = coorEnRango.CrearIt();
     while(itCoor.HaySiguiente()) {
         Coordenada siguiente = itCoor.Siguiente();
-        //if(HayPokemonEnPos(siguiente)) {
         if(HayPokemonEnPos(siguiente) && _mapa.HayCamino(c, siguiente)) {
-            _grillaPos[siguiente.latitud][siguiente.longitud].jugsEsperandoCaptura
-                    .Encolar(TuplaOrd<Jugador, aed2::Nat>(j, _jugadores[j]->cantPokemons));
+            if(_grillaPos[siguiente.latitud][siguiente.longitud].jugsEsperandoCaptura != NULL) {
+                _grillaPos[siguiente.latitud][siguiente.longitud].jugsEsperandoCaptura
+                        ->Encolar(TuplaOrd<Jugador, aed2::Nat>(j, _jugadores[j]->cantPokemons));
+            }
         }
         itCoor.Avanzar();
     }
@@ -233,10 +235,11 @@ void Juego::RemoverDeCola(Jugador j) {
     aed2::Conj<Coordenada>::const_Iterador itCoor = coorEnRango.CrearIt();
     while (itCoor.HaySiguiente()){
         Coordenada siguiente = itCoor.Siguiente();
-        //if (HayPokemonEnPos(siguiente)){
         if(HayPokemonEnPos(siguiente) && _mapa.HayCamino(c, siguiente)) {
-            TuplaOrd<Jugador, aed2::Nat> tuplaJug(j, _jugadores[j]->cantPokemons);
-            _grillaPos[siguiente.latitud][siguiente.longitud].jugsEsperandoCaptura.Borrar(tuplaJug);
+            if(_grillaPos[siguiente.latitud][siguiente.longitud].jugsEsperandoCaptura != NULL) {
+                TuplaOrd<Jugador, aed2::Nat> tuplaJug(j, _jugadores[j]->cantPokemons);
+                _grillaPos[siguiente.latitud][siguiente.longitud].jugsEsperandoCaptura->Borrar(tuplaJug);
+            }
         }
         itCoor.Avanzar();
     }

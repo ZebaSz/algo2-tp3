@@ -105,7 +105,7 @@ private:
 
         aed2::Nat contadorCaptura;
 
-        ColaPrior<TuplaOrd<Jugador, aed2::Nat> > jugsEsperandoCaptura;
+        ColaPrior<TuplaOrd<Jugador, aed2::Nat> >* jugsEsperandoCaptura;
 
         ConjuntoOrd<Jugador> jugsEnPos;
     };
@@ -121,6 +121,8 @@ private:
     aed2::Arreglo<aed2::Arreglo<infoPos> > _grillaPos;
 
     aed2::Nat _cantPokemons;
+
+    aed2::Lista<ColaPrior <TuplaOrd <Jugador, aed2::Nat> >* > _basura;
 
     //AUX FUNCTIONS
 
