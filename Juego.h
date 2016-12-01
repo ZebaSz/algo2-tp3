@@ -9,70 +9,70 @@
 
 class Juego {
 friend class Driver;
-friend class itJugadores;
+friend class const_itJugadores;
 struct infoJugador;
 public:
-    class itJugadores;
+    class const_itJugadores;
 
     Juego(const Mapa&);
 
     ~Juego();
 
-    void AgregarPokemon(Pokemon pk,Coordenada c);
+    void AgregarPokemon(const Pokemon&, const Coordenada&);
 
     aed2::Nat AgregarJugador();
 
-    void Conectarse(Jugador j, Coordenada c);
+    void Conectarse(const Jugador&, const Coordenada&);
 
-    void Desconectarse(Jugador j);
+    void Desconectarse(const Jugador&);
 
-    void Moverse(Jugador j, Coordenada c);
+    void Moverse(const Jugador&, const Coordenada&);
 
     const Mapa& ObtenerMapa() const;
 
-    itJugadores Jugadores() const;
+    const_itJugadores Jugadores() const;
 
-    bool EstaConectado(Jugador j) const;
+    bool EstaConectado(const Jugador&) const;
 
-    aed2::Nat Sanciones(Jugador j) const;
+    aed2::Nat Sanciones(const Jugador&) const;
 
-    Coordenada Posicion(Jugador j) const;
+    const Coordenada& Posicion(const Jugador&) const;
 
-    DiccString<aed2::Nat>::const_Iterador Pokemons(Jugador j) const;
+    DiccString<aed2::Nat>::const_Iterador Pokemons(const Jugador&) const;
 
-    itJugadores Expulsados() const;
+    const_itJugadores Expulsados() const;
 
     const aed2::Conj<Coordenada>& PosConPokemons() const;
 
-    const Pokemon& PokemonEnPos(Coordenada c) const;
+    const Pokemon& PokemonEnPos(const Coordenada&) const;
 
-    bool PuedoAgregarPokemon(Coordenada c) const;
+    bool PuedoAgregarPokemon(const Coordenada&) const;
 
-    bool HayPokemonCercano(Coordenada c) const;
+    bool HayPokemonCercano(const Coordenada&) const;
 
-    Coordenada PosPokemonCercano(Coordenada c) const;
+    Coordenada PosPokemonCercano(const Coordenada&) const;
 
-    aed2::Conj<Jugador> EntrenadoresPosibles(aed2::Conj<Jugador> es, Coordenada c) const;
+    aed2::Conj<Jugador> EntrenadoresPosibles(const aed2::Conj<Jugador>&, const Coordenada&) const;
 
-    aed2::Nat IndiceRareza(Pokemon pk) const;
+    aed2::Nat IndiceRareza(const Pokemon&) const;
 
     aed2::Nat CantPokemonsTotales() const;
 
-    aed2::Nat CantMismaEspecie(Pokemon pk) const;
+    aed2::Nat CantMismaEspecie(const Pokemon&) const;
 
-    class itJugadores {
+    class const_itJugadores {
     friend class Juego;
     public:
-        itJugadores();
+        const_itJugadores();
 
-        Jugador Actual();
+        Jugador Actual() const;
 
-        bool HayMas();
+        bool HayMas() const;
 
         void Avanzar();
 
     private:
-        itJugadores(const aed2::Vector<infoJugador*>*, bool);
+        const_itJugadores(const aed2::Vector<infoJugador*>*, bool);
 
         const aed2::Vector<infoJugador*>* _listaJugadores;
         aed2::Nat _contador;
@@ -126,17 +126,17 @@ private:
 
     //AUX FUNCTIONS
 
-    void AgregarACola(Jugador j);
+    void AgregarACola(const Jugador&);
 
-    void RemoverDeCola(Jugador j);
+    void RemoverDeCola(const Jugador&);
 
-    void ResetearContadores(Jugador j);
+    void ResetearContadores(const Jugador&);
 
-    bool HayPokemonEnDistancia(Coordenada c, aed2::Nat n) const;
+    bool HayPokemonEnDistancia(const Coordenada&, const aed2::Nat&) const;
 
-    bool HayPokemonEnPos(Coordenada c) const;
+    bool HayPokemonEnPos(const Coordenada&) const;
 
-    aed2::Conj<Coordenada> PosicionesEnRango(Coordenada coor, aed2::Nat n) const;
+    aed2::Conj<Coordenada> PosicionesEnRango(const Coordenada&, const aed2::Nat&) const;
 
 };
 

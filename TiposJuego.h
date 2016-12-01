@@ -6,26 +6,23 @@
 typedef unsigned int Jugador;
 typedef std::string Pokemon;
  
-struct Coordenada
-{
+struct Coordenada {
 	aed2::Nat latitud;
     aed2::Nat longitud;
-	Coordenada(aed2::Nat latitud, aed2::Nat longitud) : latitud(latitud), longitud(longitud)
-	{
-	}
+	Coordenada(aed2::Nat latitud, aed2::Nat longitud) : latitud(latitud), longitud(longitud) {}
 
-    const aed2::Nat DistEuclidea (const Coordenada& otra) const {
-        aed2::Nat la = 0;
-        aed2::Nat lo = 0;
-        if(latitud > otra.latitud){
-            la = (latitud - otra.latitud)*(latitud - otra.latitud);
+    const static aed2::Nat DistEuclidea(const Coordenada& c1, const Coordenada& c2) {
+        aed2::Nat la;
+        aed2::Nat lo;
+        if(c1.latitud > c2.latitud) {
+            la = (c1.latitud - c2.latitud) * (c1.latitud - c2.latitud);
         } else {
-            la = (otra.latitud - latitud)*(otra.latitud - latitud);
+            la = (c2.latitud - c1.latitud) * (c2.latitud - c1.latitud);
         }
-        if(longitud > otra.longitud){
-            lo = (longitud - otra.longitud)*(longitud - otra.longitud);
+        if(c1.longitud > c2.longitud) {
+            lo = (c1.longitud - c2.longitud) * (c1.longitud - c2.longitud);
         } else {
-            lo = (otra.longitud - longitud)*(otra.longitud - longitud);
+            lo = (c2.longitud - c1.longitud) * (c2.longitud - c1.longitud);
         }
         return la + lo;
     }

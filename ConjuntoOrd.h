@@ -20,8 +20,6 @@ public:
 
     void Borrar(const T& elem);
 
-    const T& Minimo() const;
-
     class const_Iterador {
     public:
         const_Iterador();
@@ -40,9 +38,13 @@ public:
     private:
         const_Iterador(const ConjuntoOrd*);
 
-        aed2::Lista<typename ConjuntoOrd<T>::Nodo*> _pila;
+        const_Iterador(const ConjuntoOrd*, const typename ConjuntoOrd<T>::Nodo*);
+
+        aed2::Lista<const typename ConjuntoOrd<T>::Nodo*> _pila;
         const ConjuntoOrd* _conj;
     };
+
+    const_Iterador Minimo() const;
 
     const_Iterador CrearIt() const;
 
@@ -88,7 +90,7 @@ private:
 
     Nodo* BorrarNodo(const T& elem, Nodo* p);
 
-    Nodo* BuscarMinimo(Nodo* p);
+    Nodo* BuscarMinimo(Nodo* p) const;
 
     Nodo* RemoverMinimo(Nodo* p);
 
@@ -150,12 +152,12 @@ void ConjuntoOrd<T>::Borrar(const T& elem) {
 }
 
 template <typename T>
-const T& ConjuntoOrd<T>::Minimo() const {
+typename ConjuntoOrd<T>::const_Iterador ConjuntoOrd<T>::Minimo() const {
     Nodo* pos = _raiz;
     while (pos->izq != NULL){
         pos = pos->izq;
     }
-    return pos->valor;
+    return const_Iterador(this, pos);
 }
 
 template <typename T>
@@ -269,7 +271,7 @@ typename ConjuntoOrd<T>::Nodo* ConjuntoOrd<T>::BorrarNodo(const T &elem, Nodo *p
 }
 
 template <typename T>
-typename ConjuntoOrd<T>::Nodo* ConjuntoOrd<T>::BuscarMinimo(Nodo *p){
+typename ConjuntoOrd<T>::Nodo* ConjuntoOrd<T>::BuscarMinimo(Nodo *p) const {
     if (p->izq == NULL){
         return p;
     } else {
@@ -347,6 +349,12 @@ ConjuntoOrd<T>::const_Iterador::const_Iterador(const ConjuntoOrd* conj)
 }
 
 template <typename T>
+ConjuntoOrd<T>::const_Iterador::const_Iterador(const ConjuntoOrd* conj, const Nodo* nodo)
+        : _pila(), _conj(conj) {
+    _pila.AgregarAdelante(nodo);
+}
+
+template <typename T>
 bool ConjuntoOrd<T>::const_Iterador::HayMas() const {
     return !_pila.EsVacia();
 }
@@ -358,7 +366,7 @@ const T& ConjuntoOrd<T>::const_Iterador::Actual() const {
 
 template <typename T>
 void ConjuntoOrd<T>::const_Iterador::Avanzar() {
-    Nodo* tope = _pila.Primero();
+    const Nodo* tope = _pila.Primero();
     if(tope->izq != NULL) {
         _pila.AgregarAdelante(tope->izq);
     } else {

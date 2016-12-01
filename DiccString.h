@@ -15,16 +15,16 @@ public:
 
     bool Definido(const aed2::String& clave) const;
 
-    const T Obtener(const aed2::String& clave) const;
+    const T& Obtener(const aed2::String& clave) const;
 
-    T Obtener(const aed2::String& clave);
+    T& Obtener(const aed2::String& clave);
 
     void Borrar(const aed2::String& clave);
 
     const aed2::Conj<aed2::String>& Claves() const;
 
     struct Entrada {
-        Entrada(const aed2::String& key, T value) : clave(key), valor(value) {}
+        Entrada(const aed2::String& key, const T& value) : clave(key), valor(value) {}
 
         Entrada(const Entrada& otra) : clave(otra.clave), valor(otra.valor) {}
 
@@ -40,8 +40,8 @@ public:
             return os << '<' << en.clave << ',' << en.valor << '>';
         }
 
-        aed2::String clave;
-        T valor;
+        const aed2::String& clave;
+        const T& valor;
     };
 
     class const_Iterador {
@@ -52,9 +52,9 @@ public:
 
         bool HayAnterior() const;
 
-        const Entrada Siguiente() const;
+        Entrada Siguiente() const;
 
-        const Entrada Anterior() const;
+        Entrada Anterior() const;
 
         void Avanzar();
 
@@ -145,7 +145,7 @@ bool DiccString<T>::Definido(const aed2::String& clave) const{
 }
 
 template <typename T>
-T DiccString<T>::Obtener(const aed2::String& clave) {
+T& DiccString<T>::Obtener(const aed2::String& clave) {
     Nodo* actual = _raiz;
     for(size_t i = 0; i < clave.size(); ++i) {
         actual = actual->hijos[int(clave[i])];
@@ -155,7 +155,7 @@ T DiccString<T>::Obtener(const aed2::String& clave) {
 
 
 template <typename T>
-const T DiccString<T>::Obtener(const aed2::String& clave) const {
+const T& DiccString<T>::Obtener(const aed2::String& clave) const {
     Nodo* actual = _raiz;
     for(size_t i = 0; i < clave.size(); ++i) {
         actual = actual->hijos[int(clave[i])];
@@ -230,12 +230,12 @@ bool DiccString<T>::const_Iterador::HayAnterior() const {
 }
 
 template <typename T>
-const typename DiccString<T>::Entrada DiccString<T>::const_Iterador::Siguiente() const {
+typename DiccString<T>::Entrada DiccString<T>::const_Iterador::Siguiente() const {
     return Entrada(_itClaves.Siguiente(), _dic->Obtener(_itClaves.Siguiente()));
 }
 
 template <typename T>
-const typename DiccString<T>::Entrada DiccString<T>::const_Iterador::Anterior() const {
+typename DiccString<T>::Entrada DiccString<T>::const_Iterador::Anterior() const {
     return Entrada(_itClaves.Anterior(), _dic->Obtener(_itClaves.Anterior()));
 }
 

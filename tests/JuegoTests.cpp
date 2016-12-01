@@ -41,7 +41,7 @@ protected:
     Coordenada c4;
     aed2::Conj<Coordenada> cc;
 
-    Juego::itJugadores itJug;
+    Juego::const_itJugadores itJug;
 };
 
 // --------- TESTS ---------
@@ -265,7 +265,7 @@ TEST_F(JuegoTest, colaEspera2) {
 
     aed2::Conj<Jugador> jugadores;
 
-    Juego::itJugadores it;
+    Juego::const_itJugadores it;
     for(it = j.Jugadores(); it.HayMas(); it.Avanzar()) {
         jugadores.AgregarRapido(it.Actual());
     }
@@ -361,7 +361,6 @@ TEST_F(JuegoTest, testfallido) {
     Juego j(m);
     Jugador e1 = j.AgregarJugador();
     Jugador e2 = j.AgregarJugador();
-    Jugador e3 = j.AgregarJugador();
 
     j.AgregarPokemon("Pikachu", c1);
     j.AgregarPokemon("Pikachu", c3);
@@ -546,7 +545,7 @@ TEST_F(JuegoTest, expulsados) {
     j.Conectarse(e2, c1);
     expulsar(j, e2);
 
-    Juego::itJugadores it = j.Expulsados();
+    Juego::const_itJugadores it = j.Expulsados();
     ASSERT_TRUE(it.HayMas());
     ASSERT_EQ(it.Actual(), e2);
     it.Avanzar();

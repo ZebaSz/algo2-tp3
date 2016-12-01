@@ -45,7 +45,7 @@ bool Driver::posExistente(const Coordenada &c) const {
 Conj<Jugador> Driver::jugadores() const {
     Conj<Jugador> res;
 
-    Juego::itJugadores it;
+    Juego::const_itJugadores it;
     for(it = _juego.Jugadores(); it.HayMas(); it.Avanzar()) {
         res.AgregarRapido(it.Actual());
     }
@@ -76,7 +76,7 @@ Dicc<Pokemon, Nat> Driver::pokemons(const Jugador &j) const {
 Conj<Jugador> Driver::expulsados() const {
     Conj<Jugador> res;
 
-    Juego::itJugadores it;
+    Juego::const_itJugadores it;
     for(it = _juego.Expulsados(); it.HayMas(); it.Avanzar()) {
         res.AgregarRapido(it.Actual());
     }

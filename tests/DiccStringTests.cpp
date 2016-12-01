@@ -148,8 +148,10 @@ TEST_F(DiccStringTest, itSiguienteAnterior) {
     dicc1.Definir(pk1, 1);
     dicc1.Definir(pk2, 2);
 
-    DiccString<aed2::Nat>::Entrada en1(pk1, 1);
-    DiccString<aed2::Nat>::Entrada en2(pk2, 2);
+    aed2::Nat val1(1);
+    aed2::Nat val2(2);
+    DiccString<aed2::Nat>::Entrada en1(pk1, val1);
+    DiccString<aed2::Nat>::Entrada en2(pk2, val2);
 
     // El orden en que figuran para el iterador es inverso
     // porque se usa AgregarRapido al definir,

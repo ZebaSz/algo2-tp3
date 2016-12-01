@@ -38,26 +38,22 @@ public:
 
 private:
 	ConjuntoOrd<T> _conjElem;
-	T* _menor;
+	typename ConjuntoOrd<T>::const_Iterador _menor;
 };
 
 template <typename T>
-ColaPrior<T>::ColaPrior() : _menor(NULL) {
+ColaPrior<T>::ColaPrior() {
 }
 
 template <typename T>
 ColaPrior<T>::~ColaPrior(){
-    delete _menor;
 }
 
 template <typename T>
 void ColaPrior<T>::Encolar(const T &elem){
 	_conjElem.Agregar(elem);
-	if(_menor == NULL) {
-        _menor = new T(elem);
-    } else if (elem < *_menor){
-        delete _menor;
-        _menor = new T(elem);
+	if(!_menor.HayMas() || elem < _menor.Actual()) {
+        _menor = _conjElem.Minimo();
     }
 }
 
@@ -68,29 +64,23 @@ bool ColaPrior<T>::Vacia() const {
 
 template <typename T>
 const T& ColaPrior<T>::Proximo() const{
-	return *_menor;
+	return _menor.Actual();
 }
 
 template <typename T>
 void ColaPrior<T>::Desencolar() {
-	_conjElem.Borrar(*_menor);
-    delete _menor;
-    if (! _conjElem.Vacio()){
-        _menor = new T(_conjElem.Minimo());
-    } else {
-        _menor = NULL;
-    }
+    Borrar(_menor.Actual());
 }
 
 template <typename T>
-void ColaPrior<T>::Borrar(const T &elem){
+void ColaPrior<T>::Borrar(const T &elem) {
+    bool eraMinimo = _menor.Actual() == elem;
 	_conjElem.Borrar(elem);
-    if (*_menor == elem){
-        delete _menor;
-        if (! _conjElem.Vacio()){
-            _menor = new T(_conjElem.Minimo());
+    if (eraMinimo){
+        if (!_conjElem.Vacio()){
+            _menor = _conjElem.Minimo();
         } else {
-            _menor = NULL;
+            _menor = _conjElem.CrearIt();
         }
     }
 }
